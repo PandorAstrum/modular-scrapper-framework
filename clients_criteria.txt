@@ -1,0 +1,101 @@
+1) The client has a REST api which they would like the json to be sent to in addition to the xls output
+2) Only the url for the images is required, not the actual image itself.
+3) There is a need to also get the prices for the items. The issue is that the price may vary depending on the login. So a task will need to be created that can go through each and every item and only get the price field. This will be a separate task from the normal scrape fields.
+4) The client would need a way to get a copy of the code and a way to run the extracts in case you are busy or are otherwise unavailable. They are very interested in having a backup plan just in case.
+
+
+
+
+
+
+I have the api written and ready to receive the extraction results. In order to make that happen as we spoke earlier today about you adding a field to let the api know which site you are uploading, I have created a map so that you can simply send the ID number:
+
+ID Mappings
+
+3	ArteriorsHome
+5	Bernhardt
+1	Century
+10	Cowtan
+2	CurreyAndCompany
+9	HookerFurniture
+7	NoirFurniturela
+6	ReginaAndrew
+4	Surya
+8	VisualComfort
+
+
+Endpoint Addresses
+
+The two (2) REST api endpoints are:
+
+https://vendacartapi.azurewebsites.net/api/productimport
+
+and
+
+https://vendacartapi.azurewebsites.net/api/productlistimport
+
+Since I’m not sure how these parsers perform uploading I created two endpoints. The first one should be used if you are sending one item at a time. You probably won’t use this one at all because it may not make a lot of sense to send one at a time. But if they send them in a loop that way I wanted to have coverage.
+
+The next one will probably be the one you would be using as it accepts a list of items. BOTH of these endpoints expect JSON. Again, the first one is a single item which would look like this:
+
+{
+            "SiteId" : 3,
+            "Sku" : "TerrellTest13",
+            "ItemName": "Terrell Test Item",
+            "ItemDescription": "No Particular Item",
+            "Dimension" : "32 x 50 x 44",
+            "Photo1" : "https://www.wherethephotolives.com/images/1",
+            "Photo2" : "https://www.wherethephotolives.com/images/2",
+            "Photo3" : "https://www.wherethephotolives.com/images/3",
+            "Photo4" : ""
+}
+
+The other one expects a JSON array that looks like this:
+
+[{
+            "SiteId" : 3,
+            "Sku" : "TerrellTest10",
+            "ItemName": "Terrell Test Item",
+            "ItemDescription": "No Particular Item",
+            "Dimension" : "32 x 50 x 44",
+            "Photo1" : "https://www.wherethephotolives.com/images/1",
+            "Photo2" : "https://www.wherethephotolives.com/images/2",
+            "Photo3" : "https://www.wherethephotolives.com/images/3",
+            "Photo4" : ""
+},
+{
+            "SiteId" : 3,
+            "Sku" : "TerrellTest11",
+            "ItemName": "Terrell Test Item",
+            "ItemDescription": "No Particular Item",
+            "Dimension" : "32 x 50 x 44",
+            "Photo1" : "https://www.wherethephotolives.com/images/1",
+            "Photo2" : "https://www.wherethephotolives.com/images/2",
+            "Photo3" : "https://www.wherethephotolives.com/images/3",
+            "Photo4" : ""
+}]
+
+Notes
+
+A couple of notes about the interfaces:
+
+•	All fields are required except for Photo2,Photo3 and Photo4. Uploads without at least one photo will be rejected.
+•	Sku names should be unique.
+•	Sku names should only contain the unique identifier of the item. For example CC2334 with nothing else
+•	The item name can contain the sku but it is preferred to not include it if possible.
+
+If you are new to REST services a free tool to help test against the interfaces is call Postman. It is a widely used tool amongst developers and can be downloaded from here:
+
+https://www.getpostman.com/
+
+You will need to create an account to use it but it is free. If you decide to use it I have created some test calls to the api. Feel free to checkout the scripts I used:
+
+https://www.getpostman.com/collections/286c2f9eb4816801b039
+
+
+You will need to save the file contents in Notepad and when you open Postman just click File -> Import.
+
+Let me know if you have any issues.
+
+Thanks,
+Terrell
