@@ -4,7 +4,7 @@ __author__ = "Ashiquzzaman Khan"
 __desc__ = "Main Execution file for the Command line tools"
 """
 import argparse
-# from core import commands, utility
+from core import commands
 import utility
 
 if __name__ == '__main__':
@@ -15,7 +15,7 @@ if __name__ == '__main__':
     # arguments
     # TODO: more to add e.g: add function, stats
     parser.add_argument("operation", help="Specify an operation", choices=_choices, type=lambda s: s.lower())
-    parser.add_argument("-b", help="Specify a bot")
+    parser.add_argument("-s", help="Specify a scrapper name")
     args = parser.parse_args()
 
     _invoker = commands.Invoker()
