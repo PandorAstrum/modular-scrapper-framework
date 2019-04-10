@@ -4,10 +4,6 @@
 4) The client would need a way to get a copy of the code and a way to run the extracts in case you are busy or are otherwise unavailable. They are very interested in having a backup plan just in case.
 
 
-
-
-
-
 I have the api written and ready to receive the extraction results. In order to make that happen as we spoke earlier today about you adding a field to let the api know which site you are uploading, I have created a map so that you can simply send the ID number:
 
 ID Mappings

@@ -33,7 +33,7 @@ class Create(AbsCommand):
 
     def operation(self):
         _director = Director()
-        # first question what to create
+        # first question spider name
         _project_class = utility.AutoLoader(projects, AbsProject, True)
         _project_names = _project_class.get_names()
 

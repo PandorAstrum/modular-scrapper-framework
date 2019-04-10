@@ -4,9 +4,10 @@ __author__ = "Ashiquzzaman Khan"
 __desc__ = "Main Exe file to Run"
 """
 import sys
-from core.utility import readJSON
+import utility
+from utility import readJSON
 from .command_lines import AbsCommand
-from core import utility
+
 
 class Make(AbsCommand):
     """
@@ -21,7 +22,7 @@ class Make(AbsCommand):
 
     @property
     def description(self):
-        return 'Generate the bot from JSON settings'
+        return 'Generate the spider from JSON settings'
 
     def execute(self, args):
         self._receiver.action(self, args)

@@ -26,4 +26,3 @@ if __name__ == '__main__':
         _invoker.store_command(_command)
 
     _invoker.execute_commands(args.operation)
-

@@ -30,22 +30,20 @@ def get_output_file(_file_name='', _extension="json"):
     return f"{_file_name}.{_extension}"
 
 
-
-
-
-
 def get_all_variable(_package):
     return [attr for attr in dir(_package) if
                not callable(getattr(_package, attr)) and not attr.startswith("__")]
 
+
 class AutoLoader(object):
-    loaded_module= {}
+    loaded_module = {}
+
     def __init__(self, _package, _abs_cls, _custom_sort):
         self.load_module(_package, _abs_cls, _custom_sort)
 
     def load_module(self, _package, _abs_cls, _custom_sort=False):
         self.loaded_module= {}
-        classes = getmembers(_package, lambda m: isclass(m) and not isabstract(m)) # make sure its not abstract class
+        classes = getmembers(_package, lambda m: isclass(m) and not isabstract(m))  # make sure its not abstract class
 
         for name, _type in classes:
             if isclass(_type) and issubclass(_type, _abs_cls):

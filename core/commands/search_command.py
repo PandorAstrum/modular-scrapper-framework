@@ -4,7 +4,8 @@ __author__ = "Ashiquzzaman Khan"
 __desc__ = "Main Exe file to Run"
 """
 from .command_lines import AbsCommand
-from core import utility
+import utility
+
 
 class Search(AbsCommand):
     """
