@@ -57,7 +57,6 @@ class AutoLoader(object):
             if key.lower() == _cls_str.lower():
                 return self.loaded_module[key]()
 
-
     def rearrange(self):
         local_ = {}
         for key, value in self.loaded_module.items():
@@ -73,16 +72,18 @@ class AutoLoader(object):
 
     def get_names(self, _lower=False, _property_name=""):
         _tmp = []
-        for i in self.loaded_module.values():
-            if _lower:
-                _tmp.append(i.__name__.lower())
-            else:
-                _tmp.append(i.__name__)
         if _property_name != "":
             for key, value in self.loaded_module.items():
-                _prop = getattr(self.loaded_module[key](), _property_name)
+                _prop = getattr(self.loaded_module[key](None), _property_name)
                 _tmp.append(_prop)
-        return _tmp
+            return _tmp
+        else:
+            for i in self.loaded_module.values():
+                if _lower:
+                    _tmp.append(i.__name__.lower())
+                else:
+                    _tmp.append(i.__name__)
+            return _tmp
 
     def create_instance(self, question_cls):
         if question_cls in self.loaded_module:
@@ -97,14 +98,15 @@ class AutoLoader(object):
         return tmp
 
 
-
 def create_py(_file_path):
     with open(_file_path, 'w') as python_file:
         python_file.write("# -*- coding: utf-8 -*-" + "\n")
 
+
 def modify_py(_file_path, _template):
     with open(_file_path, 'a') as python_file:
         python_file.write(_template + "\n")
+
 
 def search_file(_path, _file, _format):
     """
