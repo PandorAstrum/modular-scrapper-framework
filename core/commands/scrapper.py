@@ -5,7 +5,6 @@ __desc__ = "Commands as class object for the cli, also list in __all__ in order 
 			Default Command is Scrapper Class (Command)"
 """
 
-import json
 import re
 
 from PyInquirer import prompt
@@ -51,9 +50,27 @@ class Scrapper(AbsCommand):
 			_questions.append(_director.get_question())
 
 		_answer = prompt(_questions, style=cenegy_style)
-		_spiderName = re.sub(r'\d+[.]\s', '', _answer['spiderName'])
+		_spiderName = re.sub(r'\d+[.]\s', '', _answer['spiderName']).strip()
+
 		# TODO: load settings
-		# with open('settings.json') as json_file:
-		# 	_settings_data = json.load(json_file)
+		settings_file = utility.get_working_dir() + "\\general\\settings.json"
+
+		settings_data = utility.readJSON(settings_file)
+		_selected_scrapper = settings_data[_spiderName]
 
 		# TODO: depending on question start another cli session or delegate extra commands
+		if _answer['toDo'].lower() == 'status':
+			print(f"Scrapping URL : {_selected_scrapper['targetURL']}")
+			print(f"Site ID: {_selected_scrapper['siteID']}")
+			print(f"Scheduled Status : {_selected_scrapper['Scheduled']}")
+			print(f"Deployed Status : {_selected_scrapper['Deployed']}")
+			print(f"Last Time Scrapper run : {_selected_scrapper['Last Run Time']}")
+			print(f"Any Changes Detected : ")
+		elif _answer['toDo'].lower() == 'edit scrapper':
+			print("Editing loop begins")
+		elif _answer['toDo'].lower() == 'run now':
+			print("calling scrapper runner here and updates json")
+		elif _answer['toDo'].lower() == 'deploy':
+			print("deploying to")
+		elif _answer['toDo'].lower() == 'schedule':
+			print("scheduling to run later")

@@ -111,9 +111,10 @@ def modify_py(_file_path, _template):
 def search_file(_path, _file, _format):
     """
     function for searching json file ends with bot in a specified folder
-    :param _bot: path <STRING> to look for the json file
+    :param _path: path <STRING> to look for the json file
     :param _file: <STRING> name of file with extension
-    :return: <LIST> of bot.json
+    :param _format: <STRING> 'path' or 'files'
+    :return: <LIST> of dirs or files
     """
     _dir = _path
     _files = glob.glob(os.path.join(_dir, _file))
@@ -125,14 +126,17 @@ def search_file(_path, _file, _format):
            _tmp.append( _f.replace(_dir,''))
         return _tmp
 
+
 def readJSON(_filepath):
     with open(_filepath) as json_file:
         data = json.load(json_file)
     return data
 
+
 def writeJSON(_filepath, _data):
     with open(_filepath, 'w') as outfile:
         json.dump(_data, outfile)
+
 
 def get_this_directory():
     _file_directory = os.path.dirname(__file__)
@@ -149,3 +153,6 @@ def create_directory(_name):
     # if not os.path.exists('shift_graphs'):
     #     os.mkdir('shift_graphs')
 
+
+def get_working_dir():
+    return os.getcwd()
