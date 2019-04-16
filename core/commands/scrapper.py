@@ -13,8 +13,6 @@ from config import cenegy_style
 from core.questionnaire.abc_question import Director
 from core import questionnaire
 from .command_lines import AbsCommand
-import sys
-
 
 __all__ = [
 	"Scrapper"

@@ -1,0 +1,1 @@
+@py.exe "C:\Users\Ana Ash\Desktop\skrapy3\project\core\schedule_task.py" %*
