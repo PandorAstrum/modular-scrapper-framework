@@ -1,19 +1,22 @@
 # -*- coding: utf-8 -*-
 """
 __author__ = "Ashiquzzaman Khan"
-__desc__ = "All question here
+__desc__ = "All question here as class object (also list in __all__ if needed to use)"
 """
 from subprocess import Popen, PIPE
 from PyInquirer import Separator
 from core.questionnaire.abc_question import AbcQuestions
 
 __all__ = [
-	"SpiderSelectQuest"
+	"SpiderSelectQuest",
+	"WhatToDoWithQuest"
 ]
 
 
 class SpiderSelectQuest(AbcQuestions):
-
+	"""
+	First Question to ask also can be trigger to back with creation order. Default to 1
+	"""
 	@property
 	def creation_order(self):
 		return 1
@@ -53,38 +56,42 @@ class SpiderSelectQuest(AbcQuestions):
 	def _build_default(self):
 		pass
 
-#
-#
-class SecondQuest(AbcQuestions):
 
-    @property
-    def creation_order(self):
-        return 2
+class WhatToDoWithQuest(AbcQuestions):
+	"""
+	Second questions
+	"""
+	@property
+	def creation_order(self):
+		return 2
 
-    @property
-    def _identifier(self):
-        return self._build_name()
+	@property
+	def _identifier(self):
+		return self._build_name()
 
-    def _build_type(self):
-        return 'input'
+	def _build_type(self):
+		return 'list'
 
-    def _build_qmark(self):
-        pass
+	def _build_qmark(self):
+		pass
 
-    def _build_name(self):
-        return 'bot_prefix'
+	def _build_name(self):
+		return 'toDo'
 
-    def _build_message(self):
-        return 'Bot Command Prefix :'
+	def _build_message(self):
+		return 'Select An Option For the Spider :'
 
-    def _build_choices(self):
-        pass
+	def _build_choices(self):
+		# TODO: get all other next commands and list here as choice
+		# temp values now
 
-    def _build_filter(self):
-        pass
+		return ["Status", "Edit Scrapper", "Run Now", "Deploy", "Schedule"]
 
-    def _build_validate(self):
-        pass
+	def _build_filter(self):
+		pass
 
-    def _build_default(self):
-        pass
+	def _build_validate(self):
+		pass
+
+	def _build_default(self):
+		pass
