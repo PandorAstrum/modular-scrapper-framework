@@ -1,0 +1,71 @@
+{
+  "ArteriorsHome":
+    {
+      "_id": 1,
+      "targetURL": "https://www.arteriorshome.com/shop",
+      "loginURL": "https://www.arteriorshome.com/customer/account/login/",
+      "login": false,
+      "username": "",
+      "password": "",
+      "siteID": 3,
+      "fields": [
+        {
+          "fieldName" : "ItemName",
+          "Xpath" : "//div[@class=\"product-name\"]/h1/text()"
+        },
+        {
+          "fieldName" : "SKU",
+          "Xpath" : "//span[@id=\"spansku\"]/text()"
+        },
+        {
+          "fieldName" : "ItemDescription",
+          "Xpath" : "//div[@id=\"description\"]/text()"
+        },
+        {
+          "fieldName" : "Dimension",
+          "Xpath" : "//li[@id=\"dimensions\"]/span[@class=\"data\"]/span[@class=\"product-diamen\"]/text()"
+        },
+        {
+          "fieldName" : "Photos",
+          "Xpath" : "//li[@class=\"item\"]/a/img/@src"
+        }
+      ],
+      "Scheduled": true,
+      "Scheduled Time" : "",
+      "Deployed": false,
+      "Deployed to": "",
+      "Last Run Time": "",
+      "Changes Detected at field": "",
+      "Settings":
+        {
+        "Log Level": "INFO",
+        "Delay": 10,
+        "User-Agents":""
+        }
+    },
+
+  "GeneralSpider": [
+    {
+      "_id": 1,
+      "target": "https://www.arteriorshome.com/shop",
+      "loginTarget": "https://www.arteriorshome.com/customer/account/login/",
+      "username": "",
+      "usernameSelector":"",
+      "password": "",
+      "passwordSelector": "",
+      "siteID": 3,
+      "fields": {
+        "SKU": "selectors",
+        "ItemName": "selectors",
+        "ItemDescription": "selectors",
+        "Dimension": "seletors",
+        "Photo1": "seletors"
+      },
+      "Scheduled": true,
+      "Scheduled Time" : "",
+      "Deployed": "",
+      "Last Run Time": "",
+      "Changes Detected at field": ""
+    }
+    ]
+}

@@ -8,7 +8,7 @@ from .command_lines import AbsCommand
 from PyInquirer import prompt
 from config import matrix_style
 # from core import utility, projects
-# from core.questions.abc_question import Director
+from core.questionnaire.abc_question import Director
 # from core.projects.abc_projects import AbsProject, Project
 # from core.questions.create_what import CreateQuestion
 

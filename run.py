@@ -3,6 +3,7 @@
 __author__ = "Ashiquzzaman Khan"
 __desc__ = "Main Execution file for the Command line tools"
 """
+
 import argparse
 from core import commands
 import utility
@@ -12,26 +13,21 @@ if __name__ == '__main__':
     _c = utility.AutoLoader(commands, commands.AbsCommand, False)
     _choices = _c.get_names(_lower=True)
     _description = _c.get_names(_property_name="description")
-    parser = argparse.ArgumentParser(prog='run.py', usage='%(prog)s [operations]',
+    parser = argparse.ArgumentParser(prog='run.py', usage='%(prog)s [operation]',
                                      description="Run an Operation "
                                                  "\nUse 'python run.py <command> -h' to see each command help",
                                      formatter_class=argparse.RawTextHelpFormatter)
-    # arguments
-    # TODO: more to add e.g: add function, stats
 
-    parser.add_argument("operation", choices=_choices, nargs="+", type=lambda s: s.lower())
-
-
-    # blame.add_argument(
-    #     '--dry-run',
-    #     help='do not blame, just pretend',
-    #     action='store_true'
-    # )
-    # for indx, c in enumerate(_choices):
-    #     parser.add_argument(c, metavar=c, nargs='+', help=_description[indx])
+    # default args
+    default_command = "scrapper"
+    parser.add_argument("operation",
+                        default=default_command,
+                        const=default_command,
+                        nargs="?",
+                        choices=_choices,
+                        type=lambda s: s.lower())
 
     args = parser.parse_args()
-
     _invoker = commands.Invoker()
     _receiver = commands.Receiver()
 
