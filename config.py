@@ -9,7 +9,7 @@ from PyInquirer import style_from_dict, Token
 
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 
-matrix_style = style_from_dict({
+cenegy_style = style_from_dict({
     Token.QuestionMark: '#008f11 bold',
     Token.Selected: '#673AB7 bold',
     Token.Instruction: '',  # default

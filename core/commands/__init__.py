@@ -7,4 +7,4 @@ from .command_lines import Invoker
 from .command_lines import Receiver
 from .command_lines import AbsCommand
 
-from .scrapper import Scrapper
+from .scrapper import *

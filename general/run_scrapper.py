@@ -23,22 +23,23 @@ def loadFields(_scrapper_name):
 
 
 def runscrapper(_scrapper_name):
+	pass
 	# load scraper item with the settings
 	# according to id get the scrapper settings from json
 
-	with open('settings.json') as json_file:
-		_settings_data = json.load(json_file)
-		_scrapper_settings = _settings_data[_scrapper_name]
-	_url = _scrapper_settings['targetURL']
-	_take_price = _scrapper_settings['login']
-	_login_url = _scrapper_settings['loginURL']
-	_username = _scrapper_settings['username']
-	_password = _scrapper_settings['password']
-	_siteId = _scrapper_settings['siteID']
-	# print(_scrapper_settings['fields'])
-	for i in _scrapper_settings['fields']:
-		if i['fieldName'] == 'ItemName':
-			print(i['Xpath'])
+	# with open('settings.json') as json_file:
+	# 	_settings_data = json.load(json_file)
+	# 	_scrapper_settings = _settings_data[_scrapper_name]
+	# _url = _scrapper_settings['targetURL']
+	# _take_price = _scrapper_settings['login']
+	# _login_url = _scrapper_settings['loginURL']
+	# _username = _scrapper_settings['username']
+	# _password = _scrapper_settings['password']
+	# _siteId = _scrapper_settings['siteID']
+	# # print(_scrapper_settings['fields'])
+	# for i in _scrapper_settings['fields']:
+	# 	if i['fieldName'] == 'ItemName':
+	# 		print(i['Xpath'])
 
 	# _project_settings = get_project_settings()
 	# process = CrawlerProcess(_project_settings)
@@ -58,4 +59,4 @@ def runscrapper(_scrapper_name):
 	# TODO: edit the json for spiders "Last Run"
 	# TODO: edit the json for the spiders
 
-runscrapper("ArteriorsHome")
+# runscrapper("ArteriorsHome")
