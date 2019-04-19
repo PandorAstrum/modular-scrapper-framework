@@ -27,7 +27,7 @@ def get_output_file(_file_name='', _extension="json"):
     :param _extension: string
     :return: string
     """
-    return f"{_file_name}.{_extension}"
+    return f"{_file_name}_{get_curr_date_time()}.{_extension}"
 
 
 def get_all_variable(_package):
@@ -38,10 +38,10 @@ def get_all_variable(_package):
 class AutoLoader(object):
     loaded_module = {}
 
-    def __init__(self, _package, _abs_cls, _custom_sort):
-        self.load_module(_package, _abs_cls, _custom_sort)
+    def __init__(self, _package, _abs_cls, _custom_sort=False, _initialized=False, _args=None):
+        self.load_module(_package, _abs_cls, _custom_sort, _initialized, _args)
 
-    def load_module(self, _package, _abs_cls, _custom_sort=False):
+    def load_module(self, _package, _abs_cls, _custom_sort, _initialized, _args):
         self.loaded_module= {}
         classes = getmembers(_package, lambda m: isclass(m) and not isabstract(m))  # make sure its not abstract class
 
@@ -50,22 +50,31 @@ class AutoLoader(object):
                 self.loaded_module.update([[name, _type]])
 
         if _custom_sort:
-            self.rearrange()
+            self.rearrange(_initialized, _args)
 
     def initialize(self, _cls_str):
         for key, value in self.loaded_module.items():
             if key.lower() == _cls_str.lower():
                 return self.loaded_module[key]()
 
-    def rearrange(self):
+    def rearrange(self, _initialized, args):
         local_ = {}
-        for key, value in self.loaded_module.items():
-            _order = getattr(self.loaded_module[key](), 'creation_order')
-            local_[key] = _order
-            local_ = {k: v for k, v in sorted(local_.items(), key=lambda x: x[1])}
-        for key, value in local_.items():
-            local_[key] = self.loaded_module[key]
-        self.loaded_module = local_
+        if not _initialized:
+            for key, value in self.loaded_module.items():
+                _order = getattr(self.loaded_module[key](), 'creation_order')
+                local_[key] = _order
+                local_ = {k: v for k, v in sorted(local_.items(), key=lambda x: x[1])}
+            for key, value in local_.items():
+                local_[key] = self.loaded_module[key]
+            self.loaded_module = local_
+        else:
+            for key, value in self.loaded_module.items():
+                _order = getattr(self.loaded_module[key](args), 'creation_order')
+                local_[key] = _order
+                local_ = {k: v for k, v in sorted(local_.items(), key=lambda x: x[1])}
+            for key, value in local_.items():
+                local_[key] = self.loaded_module[key]
+            self.loaded_module = local_
 
     def get_loaded_modules(self):
         return self.loaded_module
@@ -156,3 +165,7 @@ def create_directory(_name):
 
 def get_working_dir():
     return os.getcwd()
+
+
+def data(settings_file):
+    return readJSON(settings_file)  # read settings

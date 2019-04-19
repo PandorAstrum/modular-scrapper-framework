@@ -50,6 +50,7 @@ The other one expects a JSON array that looks like this:
 
 [{
             "SiteId" : 3,
+            "Category": "",
             "Sku" : "TerrellTest10",
             "ItemName": "Terrell Test Item",
             "ItemDescription": "No Particular Item",

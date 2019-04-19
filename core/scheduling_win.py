@@ -7,17 +7,20 @@ __desc__ = "This file is responsible to add the scheduling task to windows sched
 #Uses the new COM Task Scheduler Interface to create a new disabled scheduled task, then run it once as part of a script. Use this to launch interactive tasks, even remotely.
 
 import win32com.client
+import utility
+
 computer_name = "" #leave all blank for current computer, current user
 computer_username = ""
 computer_userdomain = ""
 computer_password = ""
 action_id = "Scrapper Task" #arbitrary action ID
-action_path = r"c:\windows\system32\calc.exe" #executable path (could be python.exe)
+cwd = utility.get_working_dir()
+action_path = rf"{cwd}\core\test.bat" #executable path (could be python.exe)
 action_arguments = r'' #arguments (could be something.py)
 action_workdir = r"c:\windows\system32" #working directory for action executable
-author = "Someone" #so that end users know who you are
-description = "testing task" #so that end users can identify the task
-task_id = "Test Task"
+author = "Ashiquzzaman Khan" #so that end users know who you are
+description = "Python Automated Scrapping Task To Run Specific Scrapper On Scheduled Time" #so that end users can identify the task
+task_id = "Scrapping Task"
 task_hidden = False #set this to True to hide the task in the interface
 username = ""
 password = ""
@@ -43,7 +46,7 @@ rootFolder = scheduler.GetFolder("\\")
 taskDef = scheduler.NewTask(0)
 colTriggers = taskDef.Triggers
 trigger = colTriggers.Create(TASK_TRIGGER_DAILY)
-trigger.DaysInterval = 100
+trigger.DaysInterval = 14  # Editable via json
 trigger.StartBoundary = "2100-01-01T08:00:00-00:00" #never start
 trigger.Enabled = False
 colActions = taskDef.Actions

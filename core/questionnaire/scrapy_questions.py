@@ -6,6 +6,9 @@ __desc__ = "All question here as class object (also list in __all__ if needed to
 from subprocess import Popen, PIPE
 from PyInquirer import Separator
 from core.questionnaire.abc_question import AbcQuestions
+import utility
+from core.operations.abc_operation import AbsOperation
+from core.operations import base_operation
 
 __all__ = [
 	"SpiderSelectQuest",
@@ -82,10 +85,9 @@ class WhatToDoWithQuest(AbcQuestions):
 		return 'Select An Option For the Spider :'
 
 	def _build_choices(self):
-		# TODO: get all other next commands and list here as choice
-		# temp values now
-
-		return ["Status", "Edit Scrapper", "Run Now", "Deploy", "Schedule"]
+		_base_operation_class = utility.AutoLoader(base_operation, AbsOperation)
+		_choices = _base_operation_class.get_names(_property_name="_identifier")
+		return _choices
 
 	def _build_filter(self):
 		pass

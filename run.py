@@ -10,7 +10,7 @@ import utility
 
 if __name__ == '__main__':
     # load all commands
-    _c = utility.AutoLoader(commands, commands.AbsCommand, False)
+    _c = utility.AutoLoader(commands, commands.AbsCommand)
     _choices = _c.get_names(_lower=True)
     _description = _c.get_names(_property_name="description")
     parser = argparse.ArgumentParser(prog='run.py', usage='%(prog)s [operation]',

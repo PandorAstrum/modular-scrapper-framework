@@ -62,11 +62,24 @@ class ArteriorshomeSpider(Spider):
     def parse5(self, response):
         item = GeneralItem()
         # grab actual data here
-
-        ItemName = response.xpath('//div[@class="product-name"]/h1/text()').extract_first()
-        SKU = response.xpath('//span[@id="spansku"]/text()').extract_first()
-        ItemDescription = response.xpath('//div[@id="description"]/text()').extract_first()
+        item_name = response.xpath('//div[@class="product-name"]/h1/text()').extract_first()
+        sku = response.xpath('//span[@id="spansku"]/text()').extract_first()
+        item_description = response.xpath('//div[@id="description"]/text()').extract_first()
         d = response.xpath('//li[@id="dimensions"]/span[@class="data"]/span[@class="product-diamen"]/text()').extract()
-        Dimension = ', '.join(d)
-        Photos = response.xpath('//li[@class="item"]/a/img/@src').extract()
-        SiteId = self.siteID
+        dimension = ', '.join(d)
+        photos = response.xpath('//li[@class="item"]/a/img/@src').extract()
+        site_id = self.siteID
+        category = ""
+
+        # todo: detect photo length and auto decide to yield
+        yield {
+            "SiteId": site_id,
+            "Sku": sku,
+            "ItemName": item_name,
+            "Category": category,
+            "ItemDescription": item_description,
+            "Dimension": dimension,
+            "Photo1": "https://www.wherethephotolives.com/images/1",
+            "Photo2": "https://www.wherethephotolives.com/images/2",
+            "Photo3": "https://www.wherethephotolives.com/images/3",
+        }
