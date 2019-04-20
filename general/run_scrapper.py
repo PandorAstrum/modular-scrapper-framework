@@ -7,42 +7,43 @@ This file contains the mechanism to run the scrapper when called
 It is called from command line (CMD in Windows or BASH on LINUX)
 """
 
-import json
-import sys
+from scrapy import spiderloader
 from scrapy.crawler import CrawlerProcess
 from scrapy.utils.project import get_project_settings
-from .spiders import ArteriorsHome
+
 # from parameters import *
 import utility
 
-def loadFields(_scrapper_name):
-	with open('settings.json') as json_file:
-		_settings_data = json.load(json_file)
-		_scrapper_settings = _settings_data[_scrapper_name]
-	return _scrapper_settings['fields']
-
 
 def general_run(_spider_name, _settings_file):
+	_settings_data = utility.readJSON(_settings_file)  # read settings
+	_selected_spider = _settings_data[_spider_name]
+	_selected_spider_settings = _selected_spider['Settings']
 	_project_settings = get_project_settings()
-	process = CrawlerProcess(_project_settings)
-	# todo: get the settings parameter from the json and set into spider scrapper
-
-	# output = utility.get_output_file("scrap")
-	# process.settings.update({
-	# 	'FEED_FORMAT': 'json',
-	# 	'FEED_URI': output,
-	# 	'LOG_LEVEL': 'DEBUG'
-	# })
+	spider_loader = spiderloader.SpiderLoader.from_settings(_project_settings)
+	_spiders = spider_loader.list()
+	_spider_classes = [spider_loader.load(name) for name in _spiders]
+	_process = CrawlerProcess(_project_settings)
+	for _spider in _spider_classes:
+		if _spider_name == _spider.name:
+			output = _selected_spider['Output'] + "\\" + utility.get_output_file("scrap")
+			print(output)
+	# 		_process.settings.update({
+	# 			'USER_AGENTS': _selected_spider_settings['User-Agents'],
+	# 			'FEED_FORMAT': 'json',
+	# 			'FEED_URI': output,
+	# 			'LOG_LEVEL': _selected_spider_settings['Log Level'],
+	# 			'DELAY': _selected_spider_settings['Delay']
+	# 		})
+	# 		_process.crawl(_spider, _selected_spider=_selected_spider)
 	#
-	# # process.crawl(ArteriorsHome.ArteriorshomeSpider,
-	# #               _start_urls=_scrapper_settings['targetURL'], _headers=USER_AGENTS, _take_categories=TAKE_CATEGORIES)
-	# #
-	# # process.start()  # the script will block here until the crawling is finished
-	# TODO: edit the json for spiders "Last Run"
-	# TODO: edit the json for the spiders
-
-# runscrapper("ArteriorsHome")
+	# _process.start()  # the script will block here until the crawling is finished
+	# _selected_spider['Last Run Time'] = str(utility.get_curr_date_time())
+	# utility.writeJSON(_settings_file, _settings_data)
 
 
-def login_run(_scrapperName, _username, _password):
+# general_run("ArteriorsHome", 'C:\\Users\\Ana Ash\\Desktop\\skrapy3\\project\\general\\settings.json')
+
+
+def login_run(_spider_name, _username, _password):
 	pass

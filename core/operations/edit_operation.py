@@ -8,13 +8,15 @@ from PyInquirer import prompt
 
 import utility
 from config import cenegy_style
-from core.operations import AbsOperation
+from core.operations import AbsOperation, scrapper_settings_operation, OperationExecutioner, OperationReceiver
+from core.questionnaire.abc_question import Director
 
 __all__ = [
 	"CurrentField",
 	"EditField",
 	"AddField",
-	"DeleteField"
+	"DeleteField",
+	"EditSettings"
 ]
 
 
@@ -200,3 +202,53 @@ class DeleteField(AbsOperation):
 					_selected_scrapper['fields'] = new_all_field
 					utility.writeJSON(settings_file, _settings_data)
 					print(f"{_answerSelect['selectField']} Deleted")
+
+
+class EditSettings(AbsOperation):
+	"""
+	Define a binding between a Receiver object and an action.
+	Implement Execute by invoking the corresponding operation(s) on
+	Receiver.
+	** This Command is responsible to utilize scrapper and do various things with it
+	"""
+
+	@property
+	def creation_order(self):
+		return 4
+
+	@property
+	def _identifier(self):
+		return "Edit Settings"
+
+	def execute(self, operation_name, settings_file, selected_spider_name):
+		self._operation_receiver.action(self, operation_name, settings_file, selected_spider_name)
+
+	def operation(self, settings_file, selected_spider_name):
+		_spiderName = selected_spider_name
+		_settings_data = utility.readJSON(settings_file)  # read settings
+		_selected_scrapper = _settings_data[_spiderName]
+		_scrapper_settings = _selected_scrapper['Settings']
+		_director = Director()
+		_quest_class = utility.AutoLoader(scrapper_settings_operation, AbsOperation)
+		_choices = _quest_class.get_names(_property_name="_identifier")
+		_questions = [
+			{
+				'type': 'rawlist',
+				'name': 'settings',
+				'message': f'Changing Settings For {_spiderName}:',
+				'choices': _choices
+			}
+		]
+
+		_answer = prompt(_questions, style=cenegy_style)
+		_operation_executioner = OperationExecutioner()
+		_operation_receiver = OperationReceiver()
+		_operation_class = utility.AutoLoader(scrapper_settings_operation, AbsOperation)
+		_operation_name = _operation_class.get_names(_property_name="_identifier")
+		for _operation in _operation_class.loaded_module.values():
+			_operation = _operation(_operation_receiver)
+			_operation_executioner.store_operation(_operation)
+
+		for i in _operation_name:
+			if _answer['settings'] == i:
+				_operation_executioner.execute_operation(i, settings_file, _spiderName)

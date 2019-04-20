@@ -4,8 +4,6 @@ __author__ = "Ashiquzzaman Khan"
 __desc__ = "Description of this file here"
 """
 from PyInquirer import prompt
-
-from core.operations import AbsOperation
 from core.questionnaire.abc_question import Director
 import utility
 from core.operations.abc_operation import AbsOperation, OperationExecutioner, OperationReceiver
@@ -43,6 +41,7 @@ class Status(AbsOperation):
 		_spiderName = selected_spider_name  # spider name
 		_settings_data = utility.readJSON(settings_file)  # read settings
 		_selected_scrapper = _settings_data[_spiderName]
+		_scrapper_settings = _selected_scrapper['Settings']
 		print(f"Spider Name : {_spiderName}")
 		print(f"Scrapping URL : {_selected_scrapper['targetURL']}")
 		print(f"Site ID: {_selected_scrapper['siteID']}")
@@ -50,6 +49,10 @@ class Status(AbsOperation):
 		print(f"Deployed Status : {_selected_scrapper['Deployed']}")
 		print(f"Last Time Scrapper run : {_selected_scrapper['Last Run Time']}")
 		print(f"Any Changes Detected : ")
+		print(f"Spider User Agents : {_scrapper_settings['User-Agents']}")
+		print(f"Spider Log Level : {_scrapper_settings['Log Level']}")
+		print(f"Spider Delay : {_scrapper_settings['Delay']} Seconds")
+		print(f"Spider Result output Directory : {_selected_scrapper['Output']}")
 
 
 class Edit(AbsOperation):

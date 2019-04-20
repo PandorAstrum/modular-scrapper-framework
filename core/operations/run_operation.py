@@ -9,6 +9,7 @@ from PyInquirer import prompt
 import utility
 from config import cenegy_style
 from core.operations import AbsOperation
+from general import run_scrapper
 
 __all__ = [
 	"GeneralRun",
@@ -39,7 +40,7 @@ class GeneralRun(AbsOperation):
 		_spiderName = selected_spider_name
 		_settings_data = utility.readJSON(settings_file)  # read settings
 		_selected_scrapper = _settings_data[_spiderName]
-		print("call general run")
+		run_scrapper.general_run(_spiderName, settings_file)
 
 
 class LoginRun(AbsOperation):

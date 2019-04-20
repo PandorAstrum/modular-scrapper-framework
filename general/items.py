@@ -6,7 +6,7 @@
 # https://doc.scrapy.org/en/latest/topics/items.html
 
 import scrapy
-from general.run_scrapper import loadFields
+
 
 class GeneralItem(scrapy.Item):
     # define the fields for your item here like:
