@@ -92,7 +92,9 @@ class ArteriorshomeSpider(Spider):
         # grab item link
         item_links = response.xpath('//li[@class="item"]/a/@href').extract()
         _all_cat = response.xpath('//ul[@class="breadcrumb"]/li')
-        _category = _all_cat[-1].xpath('.//strong/text()').extract_first()
+        _cat1 = _all_cat[-2].xpath('.//a/text()').extract_first()
+        _cat2 = _all_cat[-1].xpath('.//strong/text()').extract_first()
+        _category = _cat1 + "\\" + _cat2
         for item in item_links:
             yield Request(url=item, callback=self.parse_item, headers={'User-Agent': self.headers}, meta={'cat': _category})
 
@@ -131,10 +133,8 @@ class ArteriorshomeSpider(Spider):
             _msrp = response.xpath('//p[@class="sugested-price"]/span[@class="price"]/text()').extract_first()
             _net = response.xpath('//p[@class="normal-price"]/span[@class="price"]/text()').extract_first()
             for field in self._selected_spider["fields"]:
-                if field['fieldName'] == "ItemName":
-                    item_name = response.xpath(field['Xpath']).extract_first()
-            #     elif field['fieldName'] == "SKU":
-            #         sku = response.xpath(field['Xpath']).extract_first()
+                if field['fieldName'] == "SKU":
+                    sku = response.xpath(field['Xpath']).extract_first()
             #     elif field['fieldName'] == "ItemDescription":
             #         item_description = response.xpath(field['Xpath']).extract_first()
             #     elif field['fieldName'] == "Dimension":
@@ -146,7 +146,7 @@ class ArteriorshomeSpider(Spider):
             #         pass
 
             yield {
-                "ItemName": item_name,
+                "SKU": sku,
                 "MSRP": _msrp,
                 "Net": _net
             }
