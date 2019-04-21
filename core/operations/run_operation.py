@@ -61,4 +61,39 @@ class LoginRun(AbsOperation):
 		self._operation_receiver.action(self, operation_name, settings_file, selected_spider_name)
 
 	def operation(self, settings_file, selected_spider_name):
-		print("call Login Run")
+		_spiderName = selected_spider_name
+		_settings_data = utility.readJSON(settings_file)  # read settings
+		_selected_scrapper = _settings_data[_spiderName]
+		_question = [
+			{
+				'type': 'list',
+				'name': 'loginrun',
+				'message': 'Login With :',
+				'choices' : ["Default", "Provide Now"]
+			}
+		]
+
+		ans = prompt(_question, style=cenegy_style)
+		if ans['loginrun'] == "Default":
+			run_scrapper.login_run(_spiderName, settings_file,
+									_username=_selected_scrapper["username"],
+									_password=_selected_scrapper["password"])
+		elif ans['loginrun'] == "Provide Now":
+			# ask for username and password
+			_questionLogin = [
+				{
+					'type': 'input',
+					'name': 'username',
+					'message': 'Enter Username or email :',
+				},
+				{
+					'type': 'password',
+					'message': 'Enter Password :',
+					'name': 'password'
+				}
+			]
+
+			ansLogin = prompt(_questionLogin, style=cenegy_style)
+			run_scrapper.login_run(_spiderName, settings_file,
+									_username=ansLogin["username"],
+									_password=ansLogin["password"])
