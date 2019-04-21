@@ -26,24 +26,23 @@ def general_run(_spider_name, _settings_file):
 	_process = CrawlerProcess(_project_settings)
 	for _spider in _spider_classes:
 		if _spider_name == _spider.name:
-			output = _selected_spider['Output'] + "\\" + utility.get_output_file("scrap")
-			print(output)
-	# 		_process.settings.update({
-	# 			'USER_AGENTS': _selected_spider_settings['User-Agents'],
-	# 			'FEED_FORMAT': 'json',
-	# 			'FEED_URI': output,
-	# 			'LOG_LEVEL': _selected_spider_settings['Log Level'],
-	# 			'DELAY': _selected_spider_settings['Delay']
-	# 		})
-	# 		_process.crawl(_spider, _selected_spider=_selected_spider)
-	#
-	# _process.start()  # the script will block here until the crawling is finished
-	# _selected_spider['Last Run Time'] = str(utility.get_curr_date_time())
-	# utility.writeJSON(_settings_file, _settings_data)
+			output = utility.get_output_file("scrap")
+			_process.settings.update({
+				'USER_AGENTS': _selected_spider_settings['User-Agents'],
+				'FEED_FORMAT': 'json',
+				'FEED_URI': output,
+				'LOG_LEVEL': _selected_spider_settings['Log Level'],
+				'DELAY': _selected_spider_settings['Delay']
+			})
+			_process.crawl(_spider, _selected_spider=_selected_spider)
+
+	_process.start()  # the script will block here until the crawling is finished
+	_selected_spider['Last Run Time'] = str(utility.get_curr_date_time())
+	utility.writeJSON(_settings_file, _settings_data)
 
 
 # general_run("ArteriorsHome", 'C:\\Users\\Ana Ash\\Desktop\\skrapy3\\project\\general\\settings.json')
 
 
-def login_run(_spider_name, _username, _password):
+def login_run(_spider_name, _settings_file, _username, _password):
 	pass

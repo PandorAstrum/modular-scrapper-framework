@@ -51,8 +51,8 @@ class EditOutput(AbsOperation):
 		]
 
 		ans = prompt(_question, style=cenegy_style)
-		# todo: write to json
-		_selected_scrapper['Output'] = ans['output']
+		_tmp = ans['output'].replace("\\", "\\")
+		_selected_scrapper['Output'] = _tmp
 		utility.writeJSON(settings_file, _settings_data)
 		print(f"Output Directory Changed to : {ans['output']}")
 

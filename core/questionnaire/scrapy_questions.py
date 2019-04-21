@@ -10,6 +10,7 @@ import utility
 from core.operations.abc_operation import AbsOperation
 from core.operations import base_operation
 
+
 __all__ = [
 	"SpiderSelectQuest",
 	"WhatToDoWithQuest"

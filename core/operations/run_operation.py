@@ -3,9 +3,7 @@
 __author__ = "Ashiquzzaman Khan"
 __desc__ = "Description of this file here"
 """
-# -*- coding: utf-8 -*-
 from PyInquirer import prompt
-
 import utility
 from config import cenegy_style
 from core.operations import AbsOperation
