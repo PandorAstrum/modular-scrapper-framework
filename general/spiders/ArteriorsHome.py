@@ -116,8 +116,6 @@ class ArteriorshomeSpider(Spider):
                     dimension = ', '.join(d)
                 elif field['fieldName'] == "Photos":
                     photos = response.xpath(field['Xpath']).extract()
-                elif field['fieldName'] == "Category":
-                    pass
 
             site_id = self.siteID
 
@@ -131,11 +129,13 @@ class ArteriorshomeSpider(Spider):
                 "Photo": photos
             }
         else:
-            _msrp = response.xpath('//p[@class="sugested-price "]/span[@class="price"]/text()').extract_first()
-            _net = response.xpath('//p[@class="normal-price"]/span[@class="price"]/text()').extract_first()
             for field in self._selected_spider["fields"]:
                 if field['fieldName'] == "SKU":
                     sku = response.xpath(field['Xpath']).extract_first()
+                elif field['fieldName'] == "MSRP":
+                    _msrp = response.xpath(field['Xpath']).extract_first()
+                elif field['fieldName'] == "NET":
+                    _net = response.xpath(field['Xpath']).extract_first()
 
             yield {
                 "SKU": sku,

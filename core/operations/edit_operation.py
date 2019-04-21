@@ -16,7 +16,8 @@ __all__ = [
 	"EditField",
 	"AddField",
 	"DeleteField",
-	"EditSettings"
+	"EditSettings",
+	"Default"
 ]
 
 
@@ -214,7 +215,7 @@ class EditSettings(AbsOperation):
 
 	@property
 	def creation_order(self):
-		return 4
+		return 5
 
 	@property
 	def _identifier(self):
@@ -252,3 +253,94 @@ class EditSettings(AbsOperation):
 		for i in _operation_name:
 			if _answer['settings'] == i:
 				_operation_executioner.execute_operation(i, settings_file, _spiderName)
+
+
+class Default(AbsOperation):
+	"""
+	Define a binding between a Receiver object and an action.
+	Implement Execute by invoking the corresponding operation(s) on
+	Receiver.
+	** This Command is responsible to show current fields
+	"""
+
+	@property
+	def creation_order(self):
+		return 6
+
+	@property
+	def _identifier(self):
+		return "Default Settings"
+
+	def execute(self, operation_name, settings_file, selected_spider_name):
+		self._operation_receiver.action(self, operation_name, settings_file, selected_spider_name)
+
+	def operation(self, settings_file, selected_spider_name):
+		_spiderName = selected_spider_name
+		_settings_data = utility.readJSON(settings_file)  # read settings
+		_selected_scrapper = _settings_data[_spiderName]
+		questions = [
+			{
+				'type': 'confirm',
+				'message': 'This will revert back the Spider Settings to Default. Do you want to continue?',
+				'name': 'default',
+				'default': True,
+			}
+		]
+
+		answers = prompt(questions, style=cenegy_style)
+		if answers['default']:
+			default_json = {"ArteriorsHome":
+								{
+									"_id": 1,
+									"targetURL": "https://www.arteriorshome.com/shop",
+									"loginURL": "https://www.arteriorshome.com/customer/account/login/",
+									"username": "michael@masmarkre.com",
+									"password": "arteriors",
+									"siteID": 3,
+									"fields":
+										[
+											{
+												"fieldName": "ItemName",
+												"Xpath": '//div[@class="product-name"]/h1/text()'
+											},
+											{
+												"fieldName": "SKU",
+												"Xpath": '//span[@id="spansku"]/text()'
+											},
+											{
+												"fieldName": "ItemDescription",
+												"Xpath": '//div[@id="description"]/text()'
+											},
+											{
+												"fieldName": "Dimension",
+												"Xpath": '//li[@id="dimensions"]/span[@class="data"]/span[@class="product-diamen"]/text()'
+											},
+											{
+												"fieldName": "Photos",
+												"Xpath": '//li[@class="item"]/a/img/@src'
+											},
+											{
+												"fieldName": "Category",
+												"Xpath": '//div[@class="category"]'
+											}
+										],
+									"Scheduled": False,
+									"Scheduled Time": "",
+									"Deployed": False,
+									"Deployed to": "",
+									"Last Run Time": "",
+									"Changes Detected at field": "",
+									"Settings":
+										{
+											"Log Level": "INFO",
+											"Delay": 0,
+											"User-Agents": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.3"
+										},
+									"Output": "C:\\Users\\Ana Ash\\Desktop\\skrapy3\\project"
+								}
+			}
+
+			utility.writeJSON(settings_file, default_json)
+			print("Spider Settings Back to Default")
+		else:
+			print("Back to Default Cancelled")
