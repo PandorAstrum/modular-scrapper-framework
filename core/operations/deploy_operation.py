@@ -3,9 +3,8 @@
 __author__ = "Ashiquzzaman Khan"
 __desc__ = "Description of this file here"
 """
-# -*- coding: utf-8 -*-
-from PyInquirer import prompt
 
+from PyInquirer import prompt
 import utility
 from config import cenegy_style
 from core.operations import AbsOperation
@@ -62,4 +61,14 @@ class WinDeploy(AbsOperation):
 		self._operation_receiver.action(self, operation_name, settings_file, selected_spider_name)
 
 	def operation(self, settings_file, selected_spider_name):
+		# get spider name
+		# settings file
+		# TODO: choice general run or login run
+
+		# TODO: selected spider name
+		# TODO:
+		# TODO:
+		# TODO:
+		# TODO:
+		# TODO:
 		print("call schedule task")

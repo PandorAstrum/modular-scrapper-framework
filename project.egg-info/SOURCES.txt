@@ -1,0 +1,16 @@
+README.md
+setup.py
+general/__init__.py
+general/items.py
+general/middlewares.py
+general/pipelines.py
+general/run_scrapper.py
+general/settings.py
+general/spiders/ArteriorsHome.py
+general/spiders/__init__.py
+project.egg-info/PKG-INFO
+project.egg-info/SOURCES.txt
+project.egg-info/dependency_links.txt
+project.egg-info/entry_points.txt
+project.egg-info/top_level.txt
+utility/__init__.py

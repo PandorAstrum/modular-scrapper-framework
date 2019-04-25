@@ -29,7 +29,7 @@ class GeneralRun(AbsOperation):
 
 	@property
 	def _identifier(self):
-		return "Run Now"
+		return "Scrape Products"
 
 	def execute(self, operation_name, settings_file, selected_spider_name):
 		self._operation_receiver.action(self, operation_name, settings_file, selected_spider_name)
@@ -38,7 +38,7 @@ class GeneralRun(AbsOperation):
 		_spiderName = selected_spider_name
 		_settings_data = utility.readJSON(settings_file)  # read settings
 		_selected_scrapper = _settings_data[_spiderName]
-		run_scrapper.general_run(_spiderName, settings_file)
+		run_scrapper.scrape_product(_spiderName, settings_file)
 
 
 class LoginRun(AbsOperation):
@@ -55,7 +55,7 @@ class LoginRun(AbsOperation):
 
 	@property
 	def _identifier(self):
-		return "Take Price (required username and password)"
+		return "Scrape Prices (Required Username, Password, Customer ID)"
 
 	def execute(self, operation_name, settings_file, selected_spider_name):
 		self._operation_receiver.action(self, operation_name, settings_file, selected_spider_name)
@@ -75,7 +75,7 @@ class LoginRun(AbsOperation):
 
 		ans = prompt(_question, style=cenegy_style)
 		if ans['loginrun'] == "Default":
-			run_scrapper.login_run(_spiderName, settings_file,
+			run_scrapper.scrape_price(_spiderName, settings_file,
 									_username=_selected_scrapper["username"],
 									_password=_selected_scrapper["password"])
 		elif ans['loginrun'] == "Provide Now":
@@ -90,10 +90,16 @@ class LoginRun(AbsOperation):
 					'type': 'password',
 					'message': 'Enter Password :',
 					'name': 'password'
+				},
+				{
+					'type': 'input',
+					'message': 'Enter Customer ID :',
+					'name': 'customerID'
 				}
 			]
 
 			ansLogin = prompt(_questionLogin, style=cenegy_style)
-			run_scrapper.login_run(_spiderName, settings_file,
+			run_scrapper.scrape_price(_spiderName, settings_file,
 									_username=ansLogin["username"],
-									_password=ansLogin["password"])
+									_password=ansLogin["password"],
+									_customerid=ansLogin["customerID"])

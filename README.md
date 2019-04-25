@@ -8,7 +8,7 @@ modify scrapping on the fly.
 
 This is a CLI scrapper framework wrapper built over scrapy framework
 User can modify and adjust anything or everything about a spider or crawler from the command
-lines by typing appropriate flags
+line interface by typing appropriate flags
 
 This product is built on WIN 10 (64 bit). for further dev make sure you use 64 bit architecture
 
@@ -44,14 +44,29 @@ Need to fill up Unit test here
 ## Folder Structures:
 
 
-(project root folder)
+(project root)
 
     ├── core (folder)                    # contains the modular system
-    │   ├── commands (folder)            # contains list of commands for the CLI
+    │   ├── commands (folder)            # contains  commands for the CLI
+    │   │   ├── command_lines.py         # command line interfaces (command Pattern)
+    │   │   └── scrapper.py              # main scrapper commands
+    │   │
+    │   ├── operations (folder)          # contains list of operation to pass in commands
+    │   │   ├── abc_operation.py         # operation interfaces
+    │   │   ├── base_operation.py        # base operation (Status,Edit,Run,Deploy)
+    │   │   ├── deploy_operation.py      # deploy operation
+    │   │   ├── edit_operation.py        # editing operation
+    │   │   ├── run_operation.py         # spider run operation (calls from run_scrapper.py)
+    │   │   └── scrapper_settings_operation.py         # edit spider settings operation
+    │   │
     │   └── questionnaire (folder)       # questions list for the CLI
+    │       ├── abc_question.py          # question interface (Strategy Pattern)
+    │       └── scrapy_questions.py      # delegates all question for the spiders
     │
     ├── general (folder)                 # contains scrapy system
     │   └── spiders (folder)             # contains the actual spiders
+    │       ├── run_operation.py         # spider run operation (calls from run_scrapper.py)
+    │       └── scrapper_settings_operation.py         # edit spider settings operation
     │
     ├── utility (folder)                 # contains some helpful functions
     │

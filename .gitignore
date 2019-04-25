@@ -7,8 +7,8 @@
 .idea
 __pycache__
 *.py[cod]
-alibaba_Skrapy
 *.csv
+build
 
 # User-specific stuff
 .idea/**/workspace.xml
