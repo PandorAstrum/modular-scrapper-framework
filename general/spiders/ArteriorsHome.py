@@ -12,20 +12,24 @@ class ArteriorshomeSpider(Spider):
 
     def __init__(self, **kwargs):
         super(ArteriorshomeSpider, self).__init__(**kwargs)
-        self._selected_spider = kwargs.get('_selected_spider')
+        # self._selected_spider = kwargs.get('_selected_spider')
         self._username = kwargs.get("_username")
         self._password = kwargs.get("_password")
         self._login = kwargs.get("_signin")
         self._take_price = kwargs.get("_signin")
-        self.headers = self._selected_spider['Settings']['User-Agents']
-        self._login_url = self._selected_spider['loginURL']
-        self.siteID = self._selected_spider['siteID']
-        self.start_urls = [self._selected_spider['targetURL']]
+        # self.headers = self._selected_spider['Settings']['User-Agents']
+        # self._login_url = self._selected_spider['loginURL']
+        # self.siteID = self._selected_spider['siteID']
+        # self.start_urls = [self._selected_spider['targetURL']]
+        self.start_urls = ["https://www.arteriorshome.com/shop"]
+        self.siteID = 3
+        self.login_url = "https://www.arteriorshome.com/customer/account/login/"
+        self.headers = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.3"
         self.customer_id = kwargs.get("_custometid")
 
     def start_requests(self):
         if self._login:
-            yield Request(self._login_url, headers={'User-Agent': self.headers})
+            yield Request(self.login_url, headers={'User-Agent': self.headers})
         else:
             for url in self.start_urls:
                 yield Request(url, headers={'User-Agent': self.headers})
@@ -117,29 +121,29 @@ class ArteriorshomeSpider(Spider):
         _category = response.meta['cat']
         # grab actual data here
         if not self._take_price:
-            for field in self._selected_spider["fields"]:
-                if field['fieldName'] == "ItemName":
-                    item_name = response.xpath(field['Xpath']).extract_first()
-                    if not item_name:
-                        item_name = f"Item Name Xpath Changed at {response.url}"
-                elif field['fieldName'] == "SKU":
-                    sku = response.xpath(field['Xpath']).extract_first()
-                    if not sku:
-                        sku = f"SKU Xpath Changed at {response.url}"
-                elif field['fieldName'] == "ItemDescription":
-                    item_description = response.xpath(field['Xpath']).extract_first()
-                    if not item_description:
-                        item_description = f"Item Description Xpath Changed at {response.url}"
-                elif field['fieldName'] == "Dimension":
-                    d = response.xpath(field['Xpath']).extract()
-                    if len(d) <= 0:
-                        dimension = f"Dimension Xpath Changed at {response.url}"
-                    else:
-                        dimension = ', '.join(d)
-                elif field['fieldName'] == "Photos":
-                    photos = response.xpath(field['Xpath']).extract()
-                    if len(photos) <= 0:
-                        photos = f"Photos Xpath Changed {response.url}"
+            # for field in self._selected_spider["fields"]:
+            #     if field['fieldName'] == "ItemName":
+            item_name = response.xpath('//div[@class="product-name"]/h1/text()').extract_first()
+            if not item_name:
+                item_name = f"Item Name Xpath Changed at {response.url}"
+            # elif field['fieldName'] == "SKU":
+            sku = response.xpath('//span[@id="spansku"]/text()').extract_first()
+            if not sku:
+                sku = f"SKU Xpath Changed at {response.url}"
+                # elif field['fieldName'] == "ItemDescription":
+            item_description = response.xpath('//div[@id="description"]/text()').extract_first()
+            if not item_description:
+                item_description = f"Item Description Xpath Changed at {response.url}"
+                # elif field['fieldName'] == "Dimension":
+            d = response.xpath('//li[@id="dimensions"]/span[@class="data"]/span[@class="product-diamen"]/text()').extract()
+            if len(d) <= 0:
+                dimension = f"Dimension Xpath Changed at {response.url}"
+            else:
+                dimension = ', '.join(d)
+                # elif field['fieldName'] == "Photos":
+            photos = response.xpath('//li[@class="item"]/a/img/@src').extract()
+            if len(photos) <= 0:
+                photos = f"Photos Xpath Changed {response.url}"
 
             site_id = self.siteID
 
@@ -154,19 +158,19 @@ class ArteriorshomeSpider(Spider):
                 "Photo": photos
             }
         else:
-            for field in self._selected_spider["fields"]:
-                if field['fieldName'] == "SKU":
-                    sku = response.xpath(field['Xpath']).extract_first()
-                    if not sku:
-                        sku = f"SKU Xpath Changed at {response.url}"
-                elif field['fieldName'] == "MSRP":
-                    _msrp = response.xpath(field['Xpath']).extract_first()
-                    if not _msrp:
-                        _msrp = f"MSRP Xpath Changed at {response.url}"
-                elif field['fieldName'] == "NET":
-                    _net = response.xpath(field['Xpath']).extract_first()
-                    if not _net:
-                        _net = f"NET Xpath Changed at {response.url}"
+            # for field in self._selected_spider["fields"]:
+            #     if field['fieldName'] == "SKU":
+            sku = response.xpath('//span[@id="spansku"]/text()').extract_first()
+            if not sku:
+                sku = f"SKU Xpath Changed at {response.url}"
+                # elif field['fieldName'] == "MSRP":
+            _msrp = response.xpath('//p[@class="sugested-price "]/span[@class="price"]/text()').extract_first()
+            if not _msrp:
+                _msrp = f"MSRP Xpath Changed at {response.url}"
+                # elif field['fieldName'] == "NET":
+            _net = response.xpath('//p[@class="normal-price"]/span[@class="price"]/text()').extract_first()
+            if not _net:
+                _net = f"NET Xpath Changed at {response.url}"
 
             yield {
                 "SKU": sku,
