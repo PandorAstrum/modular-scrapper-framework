@@ -65,8 +65,12 @@ Need to fill up Unit test here
     │
     ├── general (folder)                 # contains scrapy system
     │   └── spiders (folder)             # contains the actual spiders
-    │       ├── run_operation.py         # spider run operation (calls from run_scrapper.py)
-    │       └── scrapper_settings_operation.py         # edit spider settings operation
+    │       ├── items.py
+    │       ├── middlewares.py
+    │       ├── pipelines.py
+    │       ├── run_scrapper.py         # functions for starting spider (product/price)
+    │       ├── settings.py             # spider settings
+    │       └── settings.json           # spider settings in json **
     │
     ├── utility (folder)                 # contains some helpful functions
     │
@@ -75,28 +79,79 @@ Need to fill up Unit test here
 
 ## Usage example
 
-A few motivating and useful examples of how your product can be used. Spice this up with code blocks and potentially more screenshots.
 
-* Demo all the commands here one by one
+ From cmd or bash
 
-To compile the project run:
-```
-some commands
-```
-
-To migrate the project run:
-```
-some commands
+- To Run the CLI:
+```cs
+python run.py
 ```
 
-To test the project run:
-```
-some commands
-```
+Calling From Outside of the CLI
 
+This functions can be found in `run_scrapper.py` file
+
+**function**
+```cs
+scrape_product(_spider_name, _settings_file)
+```
+Scrape the product
+<br>
+*parameters*
+```cs
+_spider_name = "ArteriorsHome" <string>
+_settings_file = "C:\Users\Desktop\Project\general\settings.josn" <path>
+```
+<br>
+
+**function**
+```cs
+scrape_price(_spider_name, _settings_file, _username, _password, _customerid)
+```
+Scrape the price
+<br>
+*parameters*
+```cs
+_spider_name = "ArteriorsHome" <string>
+_settings_file = "C:\Users\Desktop\Project\general\settings.josn" <path>
+_username = "something@somthing.net" <string>
+_password = "********" <string>
+_customerid = "elon123" <string>
+```
+<br>
+
+**function**
+```cs
+deploy_to_scrappingHub(_spider_name, _settings_file, _username, _password, _customerid, _apiKey, _projectid)
+```
+Deploy with scrapping Hub
+<br>
+*parameters*
+```cs
+_spider_name = "ArteriorsHome" <string>
+_settings_file = "C:\Users\Desktop\Project\general\settings.josn" <path>
+_username = "something@somthing.net" <string>
+_password = "********" <string>
+_customerid = "elon123" <string>
+_apikey = "3f001jk11789eervt" <string> can be found on scrapping hub dashboard
+_projectid = "331705" <string> can be found on scrapping hub dashboard
+```
+<br>
+<br>
+<br>
 
 ## Release History
 
+* 0.9.0
+    * ADD: Deployment to third party system added (Docker + Scrapping Hub)
+* 0.8.0
+    * FIX: operations, spider file name with and price json customer id
+* 0.7.0
+    * ADD: All operations added
+* 0.6.0
+    * ADD: Detection change System
+* 0.5.0
+    * ADD: Two variations of running spiders (Login/ Without Login)
 * 0.4.0
     * CHANGE: Update docs (module code remains unchanged)
 * 0.3.0
