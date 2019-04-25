@@ -3,6 +3,8 @@
 __author__ = "Ashiquzzaman Khan"
 __desc__ = "Description of this file here"
 """
+from subprocess import Popen, PIPE
+
 from flask import Flask, request, jsonify, make_response
 # from flask_sqlalchemy import SQLAlchemy
 import uuid
@@ -51,6 +53,17 @@ app.config['SECRET_KEY'] = 'thisissecret'
 #
 #     return decorated
 
+@app.route('/', methods=['GET'])
+def home():
+    # get all the spider in a list and display
+    _p = Popen(['scrapy', 'list'], stdin=PIPE, stdout=PIPE, stderr=PIPE)
+    _output, _err = _p.communicate(b"stdin")
+    rc = _p.returncode
+    _tmp_spider_list = _output.splitlines()
+    _list = []
+    for indx, spider in enumerate(_tmp_spider_list):
+        _list.append(str(indx + 1) + ". " + str(spider, 'utf-8'))
+    return jsonify(_list)
 
 @app.route('/spider/<spider_name>', methods=['GET'])
 def run_products(spider_name):
@@ -60,6 +73,7 @@ def run_products(spider_name):
     # dump the data and get everything from it
     # json loads return
     return jsonify({'Spider Name': _spider_name})
+
 
 @app.route('/spider/<customer_id>/<spider_name>/<username>/<password>', methods=['GET'])
 def run_prices(customer_id, spider_name, username, password):
