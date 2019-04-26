@@ -1,1 +1,1 @@
-web: gunicorn api:app
+web: scrapyrt -i 0.0.0.0 -p $PORT gunicorn api:app

@@ -4,15 +4,14 @@ __author__ = "Ashiquzzaman Khan"
 __desc__ = "Description of this file here"
 """
 from __future__ import unicode_literals
+
+import os
 from subprocess import Popen, PIPE
 import json
 import requests
 from flask import Flask, request, jsonify, make_response
-
 import utility
 from general.run_scrapper import scrape_product, scrape_price
-
-# from flask_sqlalchemy import SQLAlchemy
 import uuid
 from werkzeug.security import generate_password_hash, check_password_hash
 # import jwt
@@ -45,25 +44,26 @@ app.config['SECRET_KEY'] = 'thisissecret'
 #     return decorated
 
 
-def get_scrapper():
+def get_scrapper(with_index=False):
     _p = Popen(['scrapy', 'list'], stdin=PIPE, stdout=PIPE, stderr=PIPE)
     _output, _err = _p.communicate(b"stdin")
     rc = _p.returncode
     _spider_list = _output.splitlines()
     _tmp_spider_list = []
-    for spider in _spider_list:
-        _tmp_spider_list.append(str(spider, 'utf-8'))
+    if not with_index:
+        for spider in _spider_list:
+            _tmp_spider_list.append(str(spider, 'utf-8'))
+    else:
+        for indx, spider in enumerate(_spider_list):
+            _tmp_spider_list.append(str(indx + 1) + ". " + str(spider, 'utf-8'))
     return _tmp_spider_list
 
 
 @app.route('/', methods=['GET'])
 def home():
     # get all the spider in a list and display
-    _tmp_spider_list = get_scrapper()
-    _list = []
-    for indx, spider in enumerate(_tmp_spider_list):
-        _list.append(str(indx + 1) + ". " + str(spider, 'utf-8'))
-    return jsonify(_list)
+    _tmp_spider_list = get_scrapper(True)
+    return jsonify(_tmp_spider_list)
 
 
 @app.route('/spider/<spider_name>', methods=['GET'])
@@ -74,27 +74,26 @@ def run_products(spider_name):
     if _spider_name not in _tmp_spider_list:
         return jsonify({"Error": f"No Spider Named {_spider_name}"})
     else:
-        # get settings file
-        settings_file = utility.get_working_dir() + "/general/settings.json"  # the path of the settings file
-        settings_data = utility.readJSON(settings_file)  # read settings
-        _selected_scrapper = settings_data[_spider_name]  # read the exact scrapper
-        # call run scrapper for product
         params = {
-        "_username": None,
-        "_password": None,
-        "_signin": False,
-        '_spider': _spider_name,
-        'spider_name': _spider_name,
-        'start_requests': True
+            "_username": None,
+            "_password": None,
+            "_signin": False,
+            "_spider": _spider_name,
+            "spider_name": _spider_name,
+            "start_requests": True
         }
-        # http: // 127.0
-        # .0
-        # .1: 5000 / spider / test_customer_id / ArteriorsHome / michael @ masmarkre.com / arteriors
+        # async run or pool here
         response = requests.get('http://localhost:9080/crawl.json', params)
-        # scrape_product(_spider_name, settings_file)
-        # dump the data and get everything from it
-        # json loads return
-        return jsonify(response.text)
+        _data = json.loads(response.text)
+
+        if _data['status'] == 'ok':
+            # call back when done request post to https://vendacartapi.azurewebsites.net/api/productlistimport
+            # return dumped json when done to file C:\vendart\products\new
+            _filename = utility.get_output_file(_file_name=f"\\{_spider_name}_product")
+            utility.writeJSON(os.getcwd()+_filename, _data['items'])
+            return jsonify(_data)
+        else:
+            return jsonify('something went wrong')
 
 
 @app.route('/spider/<customer_id>/<spider_name>/<username>/<password>', methods=['GET'])
@@ -109,41 +108,29 @@ def run_prices(customer_id, spider_name, username, password):
         return jsonify({"Error": f"No Spider Named {_spider_name}"})
     else:
         # get settings file
-        settings_file = utility.get_working_dir() + "/general/settings.json"  # the path of the settings file
-        settings_data = utility.readJSON(settings_file)  # read settings
-        _selected_scrapper = settings_data[_spider_name]  # read the exact scrapper
-
-        # self._selected_spider = kwargs.get('_selected_spider')
-        # self._username = kwargs.get("_username")
-        # self._password = kwargs.get("_password")
-        # self._login = kwargs.get("_signin")
-        # self._take_price = kwargs.get("_signin")
-        # self.headers = self._selected_spider['Settings']['User-Agents']
-        # self._login_url = self._selected_spider['loginURL']
-        # self.siteID = self._selected_spider['siteID']
-        # self.start_urls = [self._selected_spider['targetURL']]
+        # settings_file = utility.get_working_dir() + "/general/settings.json"  # the path of the settings file
+        # settings_data = utility.readJSON(settings_file)  # read settings
+        # _selected_scrapper = settings_data[_spider_name]  # read the exact scrapper
         params = {
+            "_username": _username,
+            "_password": _password,
+            "_signin": True,
             '_spider': _spider_name,
-
-            '_selected_spider': _selected_scrapper,
-            '_username': _username,
-            '_password': _password,
-            '_signin': True,
-            '_customerid': _customer_id
+            'spider_name': _spider_name,
         }
-        # http: // 127.0
-        # .0
-        # .1: 5000 / spider / test_customer_id / ArteriorsHome / michael @ masmarkre.com / arteriors
-        response = requests.get('http://localhost:5000/crawl.json?_spider=ArteriorsHome/&_signin=True', params)
-        # data = json.loads(response.text)
-        # result = '\n'.join('<p><b>{}</b> - {}</p>'.format(item['author'], item['text'])
-        #                    for item in data['items'])
-        return response.text
-        # call run scrapper for product
-        # _data = scrape_price(_spider_name, settings_file, _username, _password, _customer_id)
+        # async run or pool here
+        response = requests.get('http://localhost:9080/crawl.json', params)
+        _data = json.loads(response.text)
+        # call back when done request post to https://vendacartapi.azurewebsites.net/api/pricing
+        # return dumped json when done to file C:\vendart\pricing\new
 
-        # return jsonify(_data)
+        if _data['status'] == 'ok':
+            _filename = utility.get_output_file(_file_name=f"\\{_spider_name}_product")
+            utility.writeJSON(os.getcwd() + _filename, _data['items'])
+            return jsonify(_data['items'])
+        else:
+            return jsonify('something went wrong')
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, port=5000)

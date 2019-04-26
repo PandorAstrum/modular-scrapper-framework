@@ -9,6 +9,7 @@ __pycache__
 *.py[cod]
 *.csv
 build
+log
 
 # User-specific stuff
 .idea/**/workspace.xml
