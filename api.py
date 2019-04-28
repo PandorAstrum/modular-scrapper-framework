@@ -5,6 +5,7 @@ __desc__ = "API To communicate with the flask app"
 """
 from __future__ import unicode_literals
 # import os
+import os
 from subprocess import Popen, PIPE
 # import json
 import requests
@@ -31,16 +32,21 @@ def get_scrapper(with_index=False):
     return _tmp_spider_list
 
 
+def get_spider_settings(_settings_file, _spider_name):
+    _settings_data = utility.readJSON(_settings_file)  # read settings
+    return _settings_data[_spider_name]
+
+
 @app.route('/', methods=['GET'])
 def home():
     # get all the spider in a list and display
-
-    return jsonify("")
+    _list_of_spiders = get_scrapper(True)
+    return jsonify(_list_of_spiders)
 
 
 @app.route('/jobs', methods=['GET'])
 def jobs():
-    # execute command scrapyd
+    # get jobs in a jsonify strong simple
     _p = Popen(['curl', '-X', 'GET', 'http://127.0.0.1:6800/listjobs.json?project=general'], stdin=PIPE, stdout=PIPE, stderr=PIPE)
     _output, _err = _p.communicate(b"stdin")
     rc = _p.returncode
@@ -50,7 +56,7 @@ def jobs():
 
 @app.route('/jobs-verbose', methods=['GET'])
 def jobs_verbose():
-    # get Detailed job list
+    # get Detailed job list with ui
     _p = Popen(['curl', '-X', 'GET', 'http://127.0.0.1:6800/jobs'], stdin=PIPE, stdout=PIPE, stderr=PIPE)
     _output, _err = _p.communicate(b"stdin")
     rc = _p.returncode
@@ -61,25 +67,38 @@ def jobs_verbose():
 def run_products(spider_name):
     # schedule a spider to run
     _spider_name = spider_name
-
+    _selected_spider_settings = get_spider_settings(os.getcwd()+"\\general\\settings.json", _spider_name)
     _tmp_spider_list = get_scrapper()
     if _spider_name not in _tmp_spider_list:
         abort(404)
     else:
         # create output filename with path
-        _path= "C:\\Users\\Ana Ash\\Desktop\\skrapy3\\project"
-        _filename= utility.get_output_file(_file_name=f"\\{_spider_name}_Products")
-        # $ curl
-        # http://localhost:6800/schedule.json -d project= <projectname> -d spider={_spider_name} - d
-        # setting = DOWNLOAD_DELAY = 2 - d
-        # arg1 = val1
+        _path = "C:\\Users\\Ana Ash\\Desktop\\skrapy3\\project"
+        _filename = utility.get_output_file(_file_name=f"\\{_spider_name}_Products")
+
         _p = Popen(['curl', 'http://localhost:6800/schedule.json',
                     '-d', 'project=general', '-d', f'spider={_spider_name}',
-                    '-o', f"{_path + _filename}"], stdin=PIPE, stdout=PIPE, stderr=PIPE)
+                    '-d', 'settings=FEED_FORMAT="json"',
+                    '-d', 'settings=FEED_STORAGES={"c": "scrapy.extensions.feedexport.FileFeedStorage"}',
+                    '-d', f'settings=FEED_URI={_path+_filename}',
+                    '-d', f'settings=LOG_LEVEL={_selected_spider_settings["Settings"]["Log Level"]}',
+                    '-d', f'settings=DELAY={_selected_spider_settings["Settings"]["Delay"],}',
+                    '-d', f'_username=None',
+                    '-d', f'_password=None',
+                    '-d', f'_signin=False',
+                    '-d', f'_start_urls={_selected_spider_settings["targetURL"]}',
+                    '-d', f'_siteID={_selected_spider_settings["siteID"]}',
+                    '-d', f'_login_url={_selected_spider_settings["loginURL"]}',
+                    '-d', f'_customer_id=None',
+        ], stdin=PIPE, stdout=PIPE, stderr=PIPE)
         _output, _err = _p.communicate(b"stdin")
         rc = _p.returncode
-
-        # return status code from _output
+        # response_data = {
+        #     "output": _output["status"],
+        #     "success": True,
+        #     "status_code": 200
+        # }
+        return _output, 200
 
 
 @app.route('/update/<project_name>', methods=["GET"])
@@ -90,6 +109,7 @@ def add_version(project_name):
 @app.route('/projects', methods=["GET"])
 def get_projects():
     pass
+
 
 @app.route('/spider/<customer_id>/<spider_name>/<username>/<password>', methods=['GET'])
 def run_prices(customer_id, spider_name, username, password):
