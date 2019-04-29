@@ -13,6 +13,7 @@ logs
 dbs
 eggs
 items
+project.egg-info
 
 # User-specific stuff
 .idea/**/workspace.xml

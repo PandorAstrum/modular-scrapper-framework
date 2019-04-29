@@ -16,7 +16,7 @@ class ArteriorshomeSpider(Spider):
         self._username = kwargs.get("_username")
         self._password = kwargs.get("_password")
         self._login = kwargs.get("_signin")
-        self.customer_id = kwargs.get("_custometid")
+        self.customer_id = kwargs.get("_customerid")
         self._take_price = False
         self.start_urls = ["https://www.arteriorshome.com/shop"]
         self.siteID = 3
