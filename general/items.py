@@ -8,12 +8,21 @@
 import scrapy
 
 
-class GeneralItem(scrapy.Item):
-    # define the fields for your item here like:
-
-    ItemName = scrapy.Field()
+class ProductItems(scrapy.Item):
+    # define the fields for products
+    SiteId = scrapy.Field()
     SKU = scrapy.Field()
+    ItemName = scrapy.Field()
+    Category = scrapy.Field()
+    URL = scrapy.Field()
     ItemDescription = scrapy.Field()
     Dimension = scrapy.Field()
     Photos = scrapy.Field()
-    SiteId = scrapy.Field()
+
+
+class PriceItems(scrapy.Item):
+    # define the fields for price
+    SKU = scrapy.Field()
+    MSRP = scrapy.Field()
+    NET = scrapy.Field()
+    CUSTOMERID = scrapy.Field()

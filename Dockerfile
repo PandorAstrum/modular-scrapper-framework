@@ -20,10 +20,7 @@ EXPOSE 80
 ENV NAME World
 
 # Run scrapy server mutithreaded job system
-CMD ["scrapyd"]
+RUN scrapyd
 
 # Create egg of spiders and deploy to Server
 RUN scrapyd-deploy local
-
-# Run app.py when the container launches
-CMD ["python", "api.py"]

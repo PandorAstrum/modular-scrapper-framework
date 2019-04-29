@@ -8,7 +8,7 @@ __desc__ = "Commands as class object for the cli, also list in __all__ in order 
 import re
 from PyInquirer import prompt
 import utility
-from config import cenegy_style
+from core.config import cenegy_style
 from core.questionnaire.abc_question import Director
 from core import questionnaire
 from .command_lines import AbsCommand

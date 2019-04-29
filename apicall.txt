@@ -1,0 +1,27 @@
+Schedule a job to run <product, price>
+http://localhost:6800/schedule.json?project=general&spider=ArteriorsHome&_signin=False  >  For Product
+http://localhost:6800/schedule.json?project=general&spider=ArteriorsHome&_signin=False&_username=something@something.net&_password=mypassword&_customerId=tester123   > for price
+
+Cancel a jobs
+cancel.json       = scrapyd.webservice.Cancel
+
+List all the projects <ignore default project>
+http://localhost:6800/listprojects.json
+
+LIst all the version of a project
+http://localhost:6800/listversions.json?project=general
+
+List all spiders from a project <general>
+http://localhost:6800/listspiders.json?project=general
+
+Delete an entire project
+delproject.json   = scrapyd.webservice.DeleteProject
+
+Delete a Project version
+delversion.json   = scrapyd.webservice.DeleteVersion
+
+All Jobs from a given project
+http://127.0.0.1:6800/listjobs.json?project=general
+
+To check the load status of a service METHODS=GET
+http://127.0.0.1:6800/daemonstatus.json

@@ -90,3 +90,4 @@ ROBOTSTXT_OBEY = True
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
 
 FEED_STORAGES={'c': 'scrapy.extensions.feedexport.FileFeedStorage'}
+FEED_FORMAT = 'json'

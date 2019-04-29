@@ -7,7 +7,7 @@ __desc__ = "Description of this file here"
 from PyInquirer import prompt
 
 import utility
-from config import cenegy_style
+from core.config import cenegy_style
 from core.operations import AbsOperation, scrapper_settings_operation, OperationExecutioner, OperationReceiver
 from core.questionnaire.abc_question import Director
 

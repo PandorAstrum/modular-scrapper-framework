@@ -8,7 +8,7 @@ from core.questionnaire.abc_question import Director
 import utility
 from core.operations.abc_operation import AbsOperation, OperationExecutioner, OperationReceiver
 from core.operations import edit_operation, run_operation, deploy_operation
-from config import cenegy_style
+from core.config import cenegy_style
 
 __all__ = [
 	"Status",

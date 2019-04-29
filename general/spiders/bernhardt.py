@@ -1,30 +1,49 @@
 # -*- coding: utf-8 -*-
-import re
-from scrapy import Request, FormRequest
-from scrapy import Spider
-from loginform import fill_login_form
 import random
+import re
+
+import scrapy
+from loginform import fill_login_form
+from scrapy import Request, FormRequest
+
+from general.items import ProductItems, PriceItems
 
 
-class ArteriorshomeSpider(Spider):
-    name = 'ArteriorsHome'
-    allowed_domains = ['www.arteriorshome.com']
+class BernhardtSpider(scrapy.Spider):
+    name = 'bernhardt'
+    allowed_domains = ['bernhardt.com']
 
     def __init__(self, **kwargs):
-        super(ArteriorshomeSpider, self).__init__(**kwargs)
+        super(BernhardtSpider, self).__init__(**kwargs)
         self._username = kwargs.get("_username")
         self._password = kwargs.get("_password")
         self._login = kwargs.get("_signin")
-        self._take_price = False
-        self.start_urls = [kwargs.get("_start_urls")]
-        self.siteID = int(kwargs.get("_siteID"))
-        self.login_url = kwargs.get("_login_url")
-        self.headers_pool = ["Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.3", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36", "Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.36 (KHTML like Gecko) Chrome/44.0.2403.155 Safari/537.36", "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36", "Mozilla/5.0 (X11; Linux i686; rv:64.0) Gecko/20100101 Firefox/64.0", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:64.0) Gecko/20100101 Firefox/64.0", "Mozilla/5.0 (X11; Linux i586; rv:63.0) Gecko/20100101 Firefox/63.0", "Mozilla/5.0 (Windows NT 6.2; WOW64; rv:63.0) Gecko/20100101 Firefox/63.0", "Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; AS; rv:11.0) like Gecko", "Mozilla/5.0 (compatible, MSIE 11, Windows NT 6.3; Trident/7.0; rv:11.0) like Gecko", "Mozilla/5.0 (compatible; MSIE 10.6; Windows NT 6.1; Trident/5.0; InfoPath.2; SLCC1; .NET CLR 3.0.4506.2152; .NET CLR 3.5.30729; .NET CLR 2.0.50727) 3gpp-gba UNTRUSTED/1.0"]
         self.customer_id = kwargs.get("_custometid")
+        self._take_price = False
+        self.siteID = 5
+        self.headers_pool = [
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.3",
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36",
+            "Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.36 (KHTML like Gecko) Chrome/44.0.2403.155 Safari/537.36",
+            "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36",
+            "Mozilla/5.0 (X11; Linux i686; rv:64.0) Gecko/20100101 Firefox/64.0",
+            "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:64.0) Gecko/20100101 Firefox/64.0",
+            "Mozilla/5.0 (X11; Linux i586; rv:63.0) Gecko/20100101 Firefox/63.0",
+            "Mozilla/5.0 (Windows NT 6.2; WOW64; rv:63.0) Gecko/20100101 Firefox/63.0",
+            "Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; AS; rv:11.0) like Gecko",
+            "Mozilla/5.0 (compatible, MSIE 11, Windows NT 6.3; Trident/7.0; rv:11.0) like Gecko",
+            "Mozilla/5.0 (compatible; MSIE 10.6; Windows NT 6.1; Trident/5.0; InfoPath.2; SLCC1; .NET CLR 3.0.4506.2152; .NET CLR 3.5.30729; .NET CLR 2.0.50727) 3gpp-gba UNTRUSTED/1.0"]
+        self.start_urls = [
+            "https://bernhardt.com/products",
+            "https://bernhardt.com/collections"
+        ]
+
+        self.login_url = "https://www.arteriorshome.com/customer/account/login/"
+
         if self._login == "True":
             self._login = True
             self._take_price = self._login
-        else:
+        elif self._login == "False":
             self._login = False
             self._take_price = self._login
         self.header = random.choice(self.headers_pool)
@@ -46,12 +65,10 @@ class ArteriorshomeSpider(Spider):
                               method=method, callback=self.parse_after_login,
                               headers={'User-Agent': self.header})
         else:
+
             _all_category = response.xpath('//ul[@class="category-list"]/li/a/@href').extract()
             if len(_all_category) <= 0:
                 pass
-                # yield {
-                #     "Changed": f"Changed Category '_all_category' Xpath at {response.url}"
-                # }
             else:
                 for _category_link in _all_category:
                     if _category_link == "https://www.arteriorshome.com/shop/on-sale":
@@ -59,7 +76,7 @@ class ArteriorshomeSpider(Spider):
                                       headers={'User-Agent': self.header})
                     else:
                         yield Request(url=_category_link, callback=self.parse_subcategory,
-                                    headers={'User-Agent': self.header})
+                                      headers={'User-Agent': self.header})
 
     def parse_after_login(self, response):
         self._login = False
@@ -73,9 +90,6 @@ class ArteriorshomeSpider(Spider):
         _all_sub_category = response.xpath('//ul[@class = "category-list"]/li/a/@href').extract()
         if len(_all_sub_category) <= 0:
             pass
-            # yield {
-            #     "Changed": f"Changed Detected, check '_all_sub_category' Xpath for {response.url}"
-            # }
         else:
             for _sub_category in _all_sub_category:
                 yield Request(url=_sub_category, callback=self.parse_deep, headers={'User-Agent': self.header})
@@ -97,7 +111,7 @@ class ArteriorshomeSpider(Spider):
                 for i in range(0, _item_amount_int, 20):
                     _total_length.append(i)
                 # Ajax Call Build up
-                for j in range(0, len(_total_length)+1):
+                for j in range(0, len(_total_length) + 1):
                     make_url_with_ajax = response.url + f"?p={j}&is_ajax=1"
                     yield Request(url=make_url_with_ajax, callback=self.parse_item_links,
                                   headers={'User-Agent': self.header})
@@ -120,71 +134,63 @@ class ArteriorshomeSpider(Spider):
         _all_cat = response.xpath('//ul[@class="breadcrumb"]/li')
         _cat1 = _all_cat[-2].xpath('.//a/text()').extract_first()
         if not _cat1:
-            # _cat1 = f"Changed Second Category Xpath at {response.url}"
             _cat1 = ""
         _cat2 = _all_cat[-1].xpath('.//strong/text()').extract_first()
         if not _cat2:
-            # _cat2 = f"Changed Last Category at Xpath at {response.url}"
             _cat2 = ""
         _category = _cat1 + "\\" + _cat2
         for item in item_links:
-            yield Request(url=item, callback=self.parse_item, headers={'User-Agent': self.header}, meta={'cat': _category})
+            yield Request(url=item, callback=self.parse_item, headers={'User-Agent': self.header},
+                          meta={'cat': _category})
 
     def parse_item(self, response):
         print(f"grabbing item {response.url}")
         _category = response.meta['cat']
         # grab actual data here
         if not self._take_price:
+            _productItem = ProductItems()
             item_name = response.xpath('//div[@class="product-name"]/h1/text()').extract_first()
             if not item_name:
                 item_name = ""
-                # item_name = f"Item Name Xpath Changed at {response.url}"
             sku = response.xpath('//span[@id="spansku"]/text()').extract_first()
             if not sku:
-                # sku = f"SKU Xpath Changed at {response.url}"
                 sku = ""
             item_description = response.xpath('//div[@id="description"]/text()').extract_first()
             if not item_description:
-                # item_description = f"Item Description Xpath Changed at {response.url}"
                 item_description = ""
-            d = response.xpath('//li[@id="dimensions"]/span[@class="data"]/span[@class="product-diamen"]/text()').extract()
+            d = response.xpath(
+                '//li[@id="dimensions"]/span[@class="data"]/span[@class="product-diamen"]/text()').extract()
             if len(d) <= 0:
                 dimension = f"Dimension Xpath Changed at {response.url}"
             else:
                 dimension = ', '.join(d)
-                # elif field['fieldName'] == "Photos":
             photos = response.xpath('//li[@class="item"]/a/img/@src').extract()
             if len(photos) <= 0:
-                # photos = f"Photos Xpath Changed {response.url}"
                 photos = []
-            site_id = self.siteID
 
-            yield {
-                "SiteId": site_id,
-                "Sku": sku,
-                "ItemName": item_name,
-                "Category": _category,
-                "Url": response.url,
-                "ItemDescription": item_description,
-                "Dimension": dimension,
-                "Photo": photos
-            }
+            _productItem['SiteId'] = self.siteID
+            _productItem['SKU'] = sku
+            _productItem['ItemName'] = item_name
+            _productItem['Category'] = _category
+            _productItem['URL'] = response.url
+            _productItem['ItemDescription'] = item_description
+            _productItem['Dimension'] = dimension
+            _productItem['Photos'] = photos
+            yield _productItem
         else:
-            sku = response.xpath('//span[@id="spansku"]/text()').extract_first()
-            if not sku:
-                # sku = f"SKU Xpath Changed at {response.url}"
-                sku = ""
+            _priceItem = PriceItems()
+            _sku = response.xpath('//span[@id="spansku"]/text()').extract_first()
+            if not _sku:
+                _sku = ""
             _msrp = response.xpath('//p[@class="sugested-price "]/span[@class="price"]/text()').extract_first()
             if not _msrp:
-                # _msrp = f"MSRP Xpath Changed at {response.url}"
                 _msrp = ""
             _net = response.xpath('//p[@class="normal-price"]/span[@class="price"]/text()').extract_first()
             if not _net:
-                # _net = f"NET Xpath Changed at {response.url}"
                 _net = ""
-            yield {
-                "SKU": sku,
-                "MSRP": _msrp,
-                "Net": _net,
-                "CustomerID": self.customer_id
-            }
+
+            _priceItem["SKU"] = _sku
+            _priceItem["MSRP"] = _msrp
+            _priceItem["NET"] = _net
+            _priceItem["CUSTOMERID"] = self.customer_id
+            yield _priceItem

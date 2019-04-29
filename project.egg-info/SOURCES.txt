@@ -8,6 +8,11 @@ general/run_scrapper.py
 general/settings.py
 general/spiders/ArteriorsHome.py
 general/spiders/__init__.py
+general/spiders/arteriorshome.py
+general/spiders/bernhardt.py
+general/spiders/centuryfurniture.py
+general/spiders/cowtan.py
+general/spiders/curreycodealers.py
 project.egg-info/PKG-INFO
 project.egg-info/SOURCES.txt
 project.egg-info/dependency_links.txt
