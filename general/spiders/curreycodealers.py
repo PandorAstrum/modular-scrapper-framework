@@ -162,7 +162,8 @@ class CurreycodealersSpider(scrapy.Spider):
             _sku = _main.xpath('.//div[@class="product__property product__sku"]/span[@class="product__propertyValue"]/text()').extract_first()
             if not _sku:
                 _sku = ""
-            _price = _main.xpath('.//div[@class="lg-andUp"]/div[@class="priceGroup"]/span[@class="price__value"]/text()').extract_first()
+            _price = _main.xpath('.//span[@class="price__value"]/text()').extract_first()
+            print(_price)
             if not _price:
                 _price = ""
 
