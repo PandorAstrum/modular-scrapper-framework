@@ -1,11 +1,9 @@
 # -*- coding: utf-8 -*-
 import random
 import re
-
 import scrapy
 from loginform import fill_login_form
 from scrapy import Request, FormRequest
-
 from general.items import ProductItems, PriceItems
 
 
@@ -62,7 +60,9 @@ class BernhardtSpider(scrapy.Spider):
                               method=method, callback=self.parse_after_login,
                               headers={'User-Agent': self.header})
         else:
-
+            _nav_all = response.xpath('//div[@id="navigation"]//ul[@class="menu"]/li')
+            _all_products = ""
+            _all_collections = ""
             _all_category = response.xpath('//ul[@class="category-list"]/li/a/@href').extract()
             if len(_all_category) <= 0:
                 pass

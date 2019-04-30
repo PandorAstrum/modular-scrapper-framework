@@ -33,17 +33,12 @@ def scrape_product(_spider_name, _settings_file):
 			_filename = utility.get_output_file(_file_name=f"{_spider_name}_product")
 			output = _filename
 			_process.settings.update({
-				'USER_AGENTS': _selected_spider_settings['User-Agents'],
-				'FEED_FORMAT': 'json',
-				'FEED_URI': output,
 				'LOG_LEVEL': _selected_spider_settings['Log Level'],
 				'DELAY': _selected_spider_settings['Delay']
 			})
-			_process.crawl(_spider, _selected_spider=_selected_spider, _signin=False)
+			_process.crawl(_spider, _signin="False")
 
 	_process.start()  # the script will block here until the crawling is finished
-	_selected_spider['Last Run Time'] = str(utility.get_curr_date_time())
-	utility.writeJSON(_settings_file, _settings_data)
 
 
 def scrape_price(_spider_name, _settings_file, _username, _password, _customerid):
@@ -68,18 +63,13 @@ def scrape_price(_spider_name, _settings_file, _username, _password, _customerid
 		if _spider_name == _spider.name:
 			_filename = utility.get_output_file(_file_name=f"{_customerid}_{_spider_name}_price")
 			_process.settings.update({
-				'USER_AGENTS': _selected_spider_settings['User-Agents'],
-				'FEED_FORMAT': 'json',
-				'FEED_URI': _filename,
 				'LOG_LEVEL': _selected_spider_settings['Log Level'],
 				'DELAY': _selected_spider_settings['Delay']
 			})
-			_process.crawl(_spider, _selected_spider=_selected_spider,
-							_signin=True,
+			_process.crawl(_spider,
+							_signin="True",
 							_username=_username,
 							_password=_password,
 							_customerid=_customerid)
 
 	_process.start()  # the script will block here until the crawling is finished
-	_selected_spider['Last Run Time'] = str(utility.get_curr_date_time())
-	utility.writeJSON(_settings_file, _settings_data)

@@ -26,3 +26,10 @@ class PriceItems(scrapy.Item):
     MSRP = scrapy.Field()
     NET = scrapy.Field()
     CUSTOMERID = scrapy.Field()
+
+
+class NormalizePriceItems(scrapy.Item):
+    # define the fields for price
+    SKU = scrapy.Field()
+    PRICE = scrapy.Field()
+    CUSTOMERID = scrapy.Field()

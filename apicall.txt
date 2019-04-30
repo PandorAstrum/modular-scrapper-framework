@@ -1,4 +1,4 @@
-•Schedule a job to run <product, price> METHODS=POST
+•Schedule a job to run METHODS=POST
     products
 http://localhost:6800/schedule.json?project=general&spider=arteriorshome
     prices
