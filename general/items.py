@@ -17,19 +17,14 @@ class ProductItems(scrapy.Item):
     URL = scrapy.Field()
     ItemDescription = scrapy.Field()
     Dimension = scrapy.Field()
-    Photos = scrapy.Field()
+    Photo = scrapy.Field()
 
 
 class PriceItems(scrapy.Item):
     # define the fields for price
+    SiteId = scrapy.Field()
     SKU = scrapy.Field()
     MSRP = scrapy.Field()
     NET = scrapy.Field()
-    CUSTOMERID = scrapy.Field()
+    AccountId = scrapy.Field()
 
-
-class NormalizePriceItems(scrapy.Item):
-    # define the fields for price
-    SKU = scrapy.Field()
-    PRICE = scrapy.Field()
-    CUSTOMERID = scrapy.Field()

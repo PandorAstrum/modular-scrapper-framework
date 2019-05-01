@@ -140,6 +140,52 @@ _projectid = "331705" <string> can be found on scrapping hub dashboard
 <br>
 <br>
 
+## Worked So far
+- [x] (CLI framework to execute spider standalone)
+- [ ] (Scrapyd server deployment)
+<br>
+
+- [x] (arteriorshome = products)
+- [x] (arteriorshome = prices)
+<br>
+
+- [ ] (bernhardt = products)
+- [ ] (bernhardt = prices)
+<br>
+
+- [ ] (centuryfurniture = products)
+- [ ] (centuryfurniture = prices)
+<br>
+
+- [ ] (cowtan = products)
+- [ ] (cowtan = prices)
+<br>
+
+- [x] (curreycodealers = products)
+- [x] (curreycodealers = prices)
+<br>
+
+- [ ] (hookerfurniture = products)
+- [ ] (hookerfurniture = prices)
+<br>
+
+- [x] (noirfurniturela = products)
+- [ ] (noirfurniturela = prices)
+<br>
+
+- [ ] (reginaandrew = products)
+- [ ] (reginaandrew = prices)
+<br>
+
+- [ ] (surya = products)
+- [ ] (surya = prices)
+<br>
+
+- [ ] (vanguardfurniture = products)
+- [ ] (vanguardfurniture = prices)
+<br>
+
+
 ## Release History
 
 * 0.9.0

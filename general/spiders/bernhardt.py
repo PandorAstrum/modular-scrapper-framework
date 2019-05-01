@@ -1,13 +1,12 @@
 # -*- coding: utf-8 -*-
 import random
 import re
-import scrapy
 from loginform import fill_login_form
-from scrapy import Request, FormRequest
+from scrapy import Request, FormRequest, Spider
 from general.items import ProductItems, PriceItems
 
 
-class BernhardtSpider(scrapy.Spider):
+class BernhardtSpider(Spider):
     name = 'bernhardt'
     allowed_domains = ['bernhardt.com']
 
@@ -172,7 +171,7 @@ class BernhardtSpider(scrapy.Spider):
             _productItem['URL'] = response.url
             _productItem['ItemDescription'] = item_description
             _productItem['Dimension'] = dimension
-            _productItem['Photos'] = photos
+            _productItem['Photo'] = photos
             yield _productItem
         else:
             _priceItem = PriceItems()
@@ -189,5 +188,5 @@ class BernhardtSpider(scrapy.Spider):
             _priceItem["SKU"] = _sku
             _priceItem["MSRP"] = _msrp
             _priceItem["NET"] = _net
-            _priceItem["CUSTOMERID"] = self.customer_id
+            _priceItem["AccountId"] = self.customer_id
             yield _priceItem

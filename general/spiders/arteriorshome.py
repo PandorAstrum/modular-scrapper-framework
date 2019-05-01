@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
 import re
 import random
-from scrapy import Request, FormRequest
-from scrapy import Spider
+from scrapy import Request, FormRequest, Spider
 from loginform import fill_login_form
 from general.items import ProductItems, PriceItems
 
@@ -168,7 +167,7 @@ class ArteriorshomeSpider(Spider):
             _productItem['URL'] = response.url
             _productItem['ItemDescription'] = item_description
             _productItem['Dimension'] = dimension
-            _productItem['Photos'] = photos
+            _productItem['Photo'] = photos
             yield _productItem
         else:
             _priceItem = PriceItems()
@@ -180,10 +179,12 @@ class ArteriorshomeSpider(Spider):
                 _msrp = ""
             _net = response.xpath('//p[@class="normal-price"]/span[@class="price"]/text()').extract_first()
             if not _net:
+
                 _net = ""
 
+            _priceItem['SiteId'] = self.siteID
             _priceItem["SKU"] = _sku
             _priceItem["MSRP"] = _msrp
             _priceItem["NET"] = _net
-            _priceItem["CUSTOMERID"] = self.customer_id
+            _priceItem["AccountId"] = self.customer_id
             yield _priceItem

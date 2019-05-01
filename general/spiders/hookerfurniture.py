@@ -1,22 +1,26 @@
 # -*- coding: utf-8 -*-
 import random
+import re
 from loginform import fill_login_form
 from scrapy import Request, FormRequest, Spider
+from bs4 import BeautifulSoup
 from general.items import ProductItems, PriceItems
 
 
-class CurreycodealersSpider(Spider):
-    name = 'curreycodealers'
-    allowed_domains = ['www.curreyandcompany.com']
+class HookerfurnitureSpider(Spider):
+    name = 'hookerfurniture'
+    allowed_domains = ['www.hookerfurniture.com']
 
     def __init__(self, **kwargs):
-        super(CurreycodealersSpider, self).__init__(**kwargs)
+        super(HookerfurnitureSpider, self).__init__(**kwargs)
         self._username = kwargs.get("_username")
         self._password = kwargs.get("_password")
         self._login = kwargs.get("_signin")
         self.customer_id = kwargs.get("_customerid")
         self._take_price = False
-        self.siteID = 2
+        self.start_urls = ["https://www.hookerfurniture.com/livingroom.inc"]
+        self.siteID = 9
+        self.login_url = "http://elink.hookerfurniture.com/"
         self.headers_pool = [
             "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.3",
             "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36",
@@ -29,11 +33,6 @@ class CurreycodealersSpider(Spider):
             "Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; AS; rv:11.0) like Gecko",
             "Mozilla/5.0 (compatible, MSIE 11, Windows NT 6.3; Trident/7.0; rv:11.0) like Gecko",
             "Mozilla/5.0 (compatible; MSIE 10.6; Windows NT 6.1; Trident/5.0; InfoPath.2; SLCC1; .NET CLR 3.0.4506.2152; .NET CLR 3.5.30729; .NET CLR 2.0.50727) 3gpp-gba UNTRUSTED/1.0"]
-        self.start_urls = ['https://www.curreyandcompany.com/lighting', 'https://www.curreyandcompany.com/Furniture/',
-                           'https://www.curreyandcompany.com/Accessories/', 'https://www.curreyandcompany.com/Outdoor/',
-                           'https://www.curreyandcompany.com/upholstery/', 'https://www.curreyandcompany.com/Collections-Shop-by-Collection/']
-
-        self.login_url = "https://www.curreyandcompany.com/sign-in/"
 
         if self._login == "True":
             self._login = True
@@ -60,15 +59,14 @@ class CurreycodealersSpider(Spider):
                               method=method, callback=self.parse_after_login,
                               headers={'User-Agent': self.header})
         else:
-            _all_sub_category = response.xpath(
-                '//ul[@class="nav nav--tree nav--categories nav--depth-1"]/li/a/@href').extract()
+            _all_sub_category = response.xpath('//ul[@class="DepartmentAttributeListClass"]/li/a/@href').extract()
             if len(_all_sub_category) <= 0:
                 pass
             else:
                 for _sub_category_link in _all_sub_category:
                     abs_sub_category_link = response.urljoin(_sub_category_link)
-                    yield Request(url=abs_sub_category_link, callback=self.parse_item_links,
-                                  headers={'User-Agent': self.header}, meta={'cat': _sub_category_link})
+                    yield Request(url=abs_sub_category_link, callback=self.parse_deep,
+                                      headers={'User-Agent': self.header})
 
     def parse_after_login(self, response):
         self._login = False
@@ -76,64 +74,48 @@ class CurreycodealersSpider(Spider):
         for url in self.start_urls:
             yield Request(url, callback=self.parse, headers={'User-Agent': self.header})
 
-    def parse_sub_category(self, response):
-        _all_sub_category = response.xpath('//ul[@class="nav nav--tree nav--categories nav--depth-1"]/li/a/@href').extract()
-        if len(_all_sub_category) <= 0:
-            pass
-        else:
-            for _sub_category_link in _all_sub_category:
-                abs_sub_category_link = response.urljoin(_sub_category_link)
-                yield Request(url=abs_sub_category_link, callback=self.parse_item_links,
-                              headers={'User-Agent': self.header}, meta={'cat': _sub_category_link})
+    def parse_deep(self, response):
+        # grab total item
+        _total_item_count = response.xpath('//div[@class="TotalItemCount"]/p/text()').extract_first()
+        _item_amount_int = int(re.sub(r'([i|I]tem\(s\)|[i|I]tems?)', '', _total_item_count).strip())
+        # calculate how many ajax call required
+        _total_times_to_call_ajax = []
+        for i in range(0, _item_amount_int, 12):
+            _total_times_to_call_ajax.append(i)
+        # Ajax Call Build up
+        for j in _total_times_to_call_ajax:
+            make_url_with_ajax = response.url + f"&_offs={j}"
+            yield Request(url=make_url_with_ajax, callback=self.parse_item_links,
+                          headers={'User-Agent': self.header})
 
     def parse_item_links(self, response):
-        _cat = response.meta['cat']
-        # grab item link
-        item_links = response.xpath('//div[@class="grid grid--products"]/article/h5/a/@href').extract()
-        for item_link in item_links:
-            abs_item_link = response.urljoin(item_link)
-            yield Request(url=abs_item_link, callback=self.parse_item, headers={'User-Agent': self.header},
-                          meta={"cat": _cat})
-
-        NEXT_PAGE_SELECTOR = 'a.pageLink__next::attr(href)'
-        next_page = response.css(NEXT_PAGE_SELECTOR).extract_first()
-        if next_page:
-            abs_next_page = response.urljoin(next_page)
-            yield Request(url=abs_next_page, callback=self.parse_item_links, headers={'User-Agent': self.header},
-                          meta={"cat": _cat})
+        _all_item_links = response.xpath('//p[@class="ProductThumbnailParagraph ProductThumbnailParagraphDescription"]/a/@href').extract()
+        for _item_link in _all_item_links:
+            abs_item_link = response.urljoin(_item_link)
+            yield Request(url=abs_item_link, callback=self.parse_item,
+                          headers={'User-Agent': self.header})
 
     def parse_item(self, response):
+        soup = BeautifulSoup(response.text, 'lxml')
+        print(f"grabbing item {response.url}")
         _category = response.meta['cat']
         # grab actual data here
         if not self._take_price:
             _productItem = ProductItems()
-            _main = response.xpath('//div[@class="product__right variantMatrix__replacedContent lg-3 md-right"]')
-
-            item_name = _main.xpath('.//h1[@class="product__name"]/text()').extract_first()
+            item_name = response.xpath('//div[@id="item-info-short-description"]/h1/text()').extract_first()
             if not item_name:
                 item_name = ""
-            sku = _main.xpath('.//div[@class="product__property product__sku"]/span[@class="product__propertyValue"]/text()').extract_first()
+            sku = ""
             if not sku:
                 sku = ""
-            dimension = _main.xpath('.//h1[@class="product__name"]/following-sibling::span/text()').extract_first()
-            if not dimension:
-                dimension = ""
-
-            item_description = response.xpath('//div[@class="product__value"]/text()').extract_first()
+            item_description = ""
             if not item_description:
                 item_description = ""
-            else:
-                item_description = item_description.strip()
 
-            photos = []
-            photos_src = response.xpath('//div[@class="zoomPanel lg-andUp--inline-block"]/img/@src').extract()
-            if len(photos_src) <= 0:
+            dimension = ""
+            photos = response.xpath('//li[@class="item"]/a/img/@src').extract()
+            if len(photos) <= 0:
                 photos = []
-            else:
-                for p in photos_src:
-                    head, sep, tail = p.partition('?')
-                    if head not in photos:
-                        photos.append(head)
 
             _productItem['SiteId'] = self.siteID
             _productItem['SKU'] = sku
@@ -146,17 +128,18 @@ class CurreycodealersSpider(Spider):
             yield _productItem
         else:
             _priceItem = PriceItems()
-            _main = response.xpath('//div[@class="product__right variantMatrix__replacedContent lg-3 md-right"]')
-            _sku = _main.xpath('.//div[@class="product__property product__sku"]/span[@class="product__propertyValue"]/text()').extract_first()
+            _sku = ""
             if not _sku:
                 _sku = ""
-            _price = _main.xpath('.//span[@class="price__value"]/text()').extract_first()
-            if not _price:
-                _price = ""
+            _msrp = ""
+            _net = ""
+            if not _net:
+                _net = ""
 
             _priceItem['SiteId'] = self.siteID
             _priceItem["SKU"] = _sku
-            _priceItem["MSRP"] = ""
-            _priceItem["NET"] = _price
+            _priceItem["MSRP"] = _msrp
+            _priceItem["NET"] = _net
             _priceItem["AccountId"] = self.customer_id
             yield _priceItem
+

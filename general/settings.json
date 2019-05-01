@@ -38,36 +38,264 @@
     }
   },
   "curreycodealers": {
-    "_id": 1,
-    "siteID": 3,
+    "_id": 5,
+    "siteID": 2,
     "fields": [
       {
         "fieldName": "ItemName",
-        "Xpath": "//div[@class=\"product-name\"]/h1/text()"
+        "Xpath": ""
       },
       {
         "fieldName": "SKU",
-        "Xpath": "//span[@id=\"spansku\"]/text()"
+        "Xpath": ""
       },
       {
         "fieldName": "ItemDescription",
-        "Xpath": "//div[@id=\"description\"]/text()"
+        "Xpath": ""
       },
       {
         "fieldName": "Dimension",
-        "Xpath": "//li[@id=\"dimensions\"]/span[@class=\"data\"]/span[@class=\"product-diamen\"]/text()"
+        "Xpath": ""
       },
       {
         "fieldName": "Photos",
-        "Xpath": "//li[@class=\"item\"]/a/img/@src"
+        "Xpath": ""
       },
       {
         "fieldName": "MSRP",
-        "Xpath": "//p[@class=\"sugested-price \"]/span[@class=\"price\"]/text()"
+        "Xpath": ""
       },
       {
         "fieldName": "NET",
-        "Xpath": "//p[@class=\"normal-price\"]/span[@class=\"price\"]/text()"
+        "Xpath": ")"
+      }
+    ],
+    "Settings": {
+      "Log Level": "INFO",
+      "Delay": 0
+    }
+  },
+  "bernhardt": {
+    "_id": 2,
+    "siteID": 5,
+    "fields": [
+      {
+        "fieldName": "ItemName",
+        "Xpath": ""
+      },
+      {
+        "fieldName": "SKU",
+        "Xpath": ""
+      },
+      {
+        "fieldName": "ItemDescription",
+        "Xpath": ""
+      },
+      {
+        "fieldName": "Dimension",
+        "Xpath": ""
+      },
+      {
+        "fieldName": "Photos",
+        "Xpath": ""
+      },
+      {
+        "fieldName": "MSRP",
+        "Xpath": ""
+      },
+      {
+        "fieldName": "NET",
+        "Xpath": ")"
+      }
+    ],
+    "Settings": {
+      "Log Level": "INFO",
+      "Delay": 0
+    }
+  },
+  "centuryfurniture": {
+    "_id": 3,
+    "siteID": 1,
+    "fields": [
+      {
+        "fieldName": "ItemName",
+        "Xpath": ""
+      },
+      {
+        "fieldName": "SKU",
+        "Xpath": ""
+      },
+      {
+        "fieldName": "ItemDescription",
+        "Xpath": ""
+      },
+      {
+        "fieldName": "Dimension",
+        "Xpath": ""
+      },
+      {
+        "fieldName": "Photos",
+        "Xpath": ""
+      },
+      {
+        "fieldName": "MSRP",
+        "Xpath": ""
+      },
+      {
+        "fieldName": "NET",
+        "Xpath": ")"
+      }
+    ],
+    "Settings": {
+      "Log Level": "INFO",
+      "Delay": 0
+    }
+  },
+  "cowtan": {
+    "_id": 4,
+    "siteID": 10,
+    "fields": [
+      {
+        "fieldName": "ItemName",
+        "Xpath": ""
+      },
+      {
+        "fieldName": "SKU",
+        "Xpath": ""
+      },
+      {
+        "fieldName": "ItemDescription",
+        "Xpath": ""
+      },
+      {
+        "fieldName": "Dimension",
+        "Xpath": ""
+      },
+      {
+        "fieldName": "Photos",
+        "Xpath": ""
+      },
+      {
+        "fieldName": "MSRP",
+        "Xpath": ""
+      },
+      {
+        "fieldName": "NET",
+        "Xpath": ")"
+      }
+    ],
+    "Settings": {
+      "Log Level": "INFO",
+      "Delay": 0
+    }
+  },
+  "hookerfurniture": {
+    "_id": 6,
+    "siteID": 9,
+    "fields": [
+      {
+        "fieldName": "ItemName",
+        "Xpath": ""
+      },
+      {
+        "fieldName": "SKU",
+        "Xpath": ""
+      },
+      {
+        "fieldName": "ItemDescription",
+        "Xpath": ""
+      },
+      {
+        "fieldName": "Dimension",
+        "Xpath": ""
+      },
+      {
+        "fieldName": "Photos",
+        "Xpath": ""
+      },
+      {
+        "fieldName": "MSRP",
+        "Xpath": ""
+      },
+      {
+        "fieldName": "NET",
+        "Xpath": ")"
+      }
+    ],
+    "Settings": {
+      "Log Level": "INFO",
+      "Delay": 0
+    }
+  },
+  "noirfurniturela": {
+    "_id": 7,
+    "siteID": 7,
+    "fields": [
+      {
+        "fieldName": "ItemName",
+        "Xpath": ""
+      },
+      {
+        "fieldName": "SKU",
+        "Xpath": ""
+      },
+      {
+        "fieldName": "ItemDescription",
+        "Xpath": ""
+      },
+      {
+        "fieldName": "Dimension",
+        "Xpath": ""
+      },
+      {
+        "fieldName": "Photos",
+        "Xpath": ""
+      },
+      {
+        "fieldName": "MSRP",
+        "Xpath": ""
+      },
+      {
+        "fieldName": "NET",
+        "Xpath": ")"
+      }
+    ],
+    "Settings": {
+      "Log Level": "INFO",
+      "Delay": 0
+    }
+  },
+  "reginaandrew": {
+    "_id": 7,
+    "siteID": 7,
+    "fields": [
+      {
+        "fieldName": "ItemName",
+        "Xpath": ""
+      },
+      {
+        "fieldName": "SKU",
+        "Xpath": ""
+      },
+      {
+        "fieldName": "ItemDescription",
+        "Xpath": ""
+      },
+      {
+        "fieldName": "Dimension",
+        "Xpath": ""
+      },
+      {
+        "fieldName": "Photos",
+        "Xpath": ""
+      },
+      {
+        "fieldName": "MSRP",
+        "Xpath": ""
+      },
+      {
+        "fieldName": "NET",
+        "Xpath": ")"
       }
     ],
     "Settings": {
