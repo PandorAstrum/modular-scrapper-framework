@@ -173,7 +173,7 @@ _projectid = "331705" <string> can be found on scrapping hub dashboard
 - [ ] (noirfurniturela = prices)
 <br>
 
-- [ ] (reginaandrew = products)
+- [x] (reginaandrew = products)
 - [ ] (reginaandrew = prices)
 <br>
 

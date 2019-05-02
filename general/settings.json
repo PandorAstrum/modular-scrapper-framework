@@ -37,44 +37,6 @@
       "Delay": 0
     }
   },
-  "curreycodealers": {
-    "_id": 5,
-    "siteID": 2,
-    "fields": [
-      {
-        "fieldName": "ItemName",
-        "Xpath": ""
-      },
-      {
-        "fieldName": "SKU",
-        "Xpath": ""
-      },
-      {
-        "fieldName": "ItemDescription",
-        "Xpath": ""
-      },
-      {
-        "fieldName": "Dimension",
-        "Xpath": ""
-      },
-      {
-        "fieldName": "Photos",
-        "Xpath": ""
-      },
-      {
-        "fieldName": "MSRP",
-        "Xpath": ""
-      },
-      {
-        "fieldName": "NET",
-        "Xpath": ")"
-      }
-    ],
-    "Settings": {
-      "Log Level": "INFO",
-      "Delay": 0
-    }
-  },
   "bernhardt": {
     "_id": 2,
     "siteID": 5,
@@ -189,6 +151,44 @@
       "Delay": 0
     }
   },
+  "curreycodealers": {
+    "_id": 5,
+    "siteID": 2,
+    "fields": [
+      {
+        "fieldName": "ItemName",
+        "Xpath": ""
+      },
+      {
+        "fieldName": "SKU",
+        "Xpath": ""
+      },
+      {
+        "fieldName": "ItemDescription",
+        "Xpath": ""
+      },
+      {
+        "fieldName": "Dimension",
+        "Xpath": ""
+      },
+      {
+        "fieldName": "Photos",
+        "Xpath": ""
+      },
+      {
+        "fieldName": "MSRP",
+        "Xpath": ""
+      },
+      {
+        "fieldName": "NET",
+        "Xpath": ")"
+      }
+    ],
+    "Settings": {
+      "Log Level": "INFO",
+      "Delay": 0
+    }
+  },
   "hookerfurniture": {
     "_id": 6,
     "siteID": 9,
@@ -266,8 +266,84 @@
     }
   },
   "reginaandrew": {
-    "_id": 7,
-    "siteID": 7,
+    "_id": 8,
+    "siteID": 6,
+    "fields": [
+      {
+        "fieldName": "ItemName",
+        "Xpath": ""
+      },
+      {
+        "fieldName": "SKU",
+        "Xpath": ""
+      },
+      {
+        "fieldName": "ItemDescription",
+        "Xpath": ""
+      },
+      {
+        "fieldName": "Dimension",
+        "Xpath": ""
+      },
+      {
+        "fieldName": "Photos",
+        "Xpath": ""
+      },
+      {
+        "fieldName": "MSRP",
+        "Xpath": ""
+      },
+      {
+        "fieldName": "NET",
+        "Xpath": ")"
+      }
+    ],
+    "Settings": {
+      "Log Level": "INFO",
+      "Delay": 0
+    }
+  },
+  "surya": {
+    "_id": 9,
+    "siteID": 4,
+    "fields": [
+      {
+        "fieldName": "ItemName",
+        "Xpath": ""
+      },
+      {
+        "fieldName": "SKU",
+        "Xpath": ""
+      },
+      {
+        "fieldName": "ItemDescription",
+        "Xpath": ""
+      },
+      {
+        "fieldName": "Dimension",
+        "Xpath": ""
+      },
+      {
+        "fieldName": "Photos",
+        "Xpath": ""
+      },
+      {
+        "fieldName": "MSRP",
+        "Xpath": ""
+      },
+      {
+        "fieldName": "NET",
+        "Xpath": ")"
+      }
+    ],
+    "Settings": {
+      "Log Level": "INFO",
+      "Delay": 0
+    }
+  },
+  "vanguardfurniture": {
+    "_id": 10,
+    "siteID": 8,
     "fields": [
       {
         "fieldName": "ItemName",
