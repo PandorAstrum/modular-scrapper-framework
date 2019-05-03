@@ -145,6 +145,10 @@ _projectid = "331705" <string> can be found on scrapping hub dashboard
 - [ ] (Scrapyd server deployment)
 <br>
 
+- [x] (abhomeinc = products)
+- [x] (abhomeinc = prices)
+<br>
+
 - [x] (arteriorshome = products)
 - [x] (arteriorshome = prices)
 <br>

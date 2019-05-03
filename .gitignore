@@ -14,6 +14,7 @@ dbs
 eggs
 items
 project.egg-info
+.scrapy
 
 # User-specific stuff
 .idea/**/workspace.xml
