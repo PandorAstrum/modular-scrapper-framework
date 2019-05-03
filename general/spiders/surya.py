@@ -9,7 +9,7 @@ class SuryaSpider(Spider):
     name = 'surya'
     allowed_domains = ['surya.com']
     custom_settings = {
-        'COOKIES_ENABLED': False,
+        'COOKIES_ENABLED': True,
         'HTTPCACHE_ENABLED': True,
     }
 
@@ -22,7 +22,7 @@ class SuryaSpider(Spider):
         self._take_price = False
         self.start_urls = ["https://surya.com/"]
         self.siteID = 4
-        self.login_url = ""
+        self.login_url = "https://surya.com/Sign-in/"
         self.headers_pool = [
             "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.3",
             "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36",
@@ -54,12 +54,16 @@ class SuryaSpider(Spider):
     def parse(self, response):
         if self._login:
             # fill login form
-            data, url, method = fill_login_form(response.url, response.body,
-                                                self._username, self._password)
+            yield FormRequest.from_response(response=response,
+                                      formdata={'UserName': self._username, 'Password': self._password},
+                                      clickdata={'id': 'p_lt_ctl06_pageplaceholder_p_lt_ctl01_logonform_Login1_LoginButton'},
+                                      callback=self.parse_after_login)
+            # data, url, method = fill_login_form(response.url, response.body,
+            #                                     self._username, self._password)
             # send a request with our login data
-            yield FormRequest(url, formdata=dict(data),
-                              method=method, callback=self.parse_after_login,
-                              headers={'User-Agent': self.header})
+            # yield FormRequest(url, formdata=dict(data),
+            #                   method=method, callback=self.parse_after_login,
+            #                   headers={'User-Agent': self.header})
         else:
             _all_category = response.xpath('//ul[@id="menuElem"]/li/a/@href').extract()
             if len(_all_category) <= 0:
@@ -165,7 +169,8 @@ class SuryaSpider(Spider):
 
             _msrp = ""
 
-            _net = response.xpath('//p[@class="normal-price"]/span[@class="price"]/text()').extract_first()
+            _net = response.xpath('//table[@class="skusChart"]//td').extract()
+            print(_net)
             if not _net:
                 _net = ""
 
