@@ -1,0 +1,31 @@
+{
+    "manifest_version": 2,
+    "name": "Clipper",
+    "version": "1.0",
+    "description": "This addon will clip the data you will select from the webpage",
+    "icons": {
+        "128": "icon128.png",
+        "48": "icon48.png",
+        "16": "icon16.png"
+    },
+    "browser_action": {
+    },
+    "content_scripts": [
+        {
+          "matches": [
+            "<all_urls>"
+          ],
+          "js": ["jquery-3.4.1.min.js", "content.js", "popup.js"],
+          "css": ["custom.css"]
+
+        }
+      ],
+    "background": {
+        "scripts":["background.js"]
+    },
+    "permissions": [
+        "activeTab",
+        "https://ajax.googleapis.com/"
+    ],
+    "web_accessible_resources": ["popup.html"]
+}

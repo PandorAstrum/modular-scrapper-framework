@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 import random
+
+from bs4 import BeautifulSoup
 from loginform import fill_login_form
 from scrapy import Request, FormRequest, Spider
 from general.items import ProductItems, PriceItems
@@ -10,7 +12,7 @@ class SuryaSpider(Spider):
     allowed_domains = ['surya.com']
     custom_settings = {
         'COOKIES_ENABLED': True,
-        'HTTPCACHE_ENABLED': True,
+        'HTTPCACHE_ENABLED': False,
     }
 
     def __init__(self, **kwargs):
@@ -54,13 +56,17 @@ class SuryaSpider(Spider):
     def parse(self, response):
         if self._login:
             # fill login form
-            yield FormRequest.from_response(response=response,
-                                      formdata={'UserName': self._username, 'Password': self._password},
-                                      clickdata={'id': 'p_lt_ctl06_pageplaceholder_p_lt_ctl01_logonform_Login1_LoginButton'},
+            return FormRequest.from_response(response,
+                                      formdata={
+                                                'p$lt$ctl06$pageplaceholder$p$lt$ctl01$logonform$Login1$UserName': self._username,
+                                                'p$lt$ctl06$pageplaceholder$p$lt$ctl01$logonform$Login1$Password': self._password},
                                       callback=self.parse_after_login)
             # data, url, method = fill_login_form(response.url, response.body,
+
+
+
             #                                     self._username, self._password)
-            # send a request with our login data
+            # # send a request with our login data
             # yield FormRequest(url, formdata=dict(data),
             #                   method=method, callback=self.parse_after_login,
             #                   headers={'User-Agent': self.header})
@@ -168,8 +174,9 @@ class SuryaSpider(Spider):
                 _sku = _sku.strip()
 
             _msrp = ""
-
-            _net = response.xpath('//table[@class="skusChart"]//td').extract()
+            soup = BeautifulSoup(response.text, 'lxml')
+            _net = soup.find_all('td')
+            # _net = response.xpath('//table[@class="skusChart"]//td').extract()
             print(_net)
             if not _net:
                 _net = ""

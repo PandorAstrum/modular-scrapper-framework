@@ -1,0 +1,201 @@
+.vendacartbody {
+    background-color: #222222;
+    padding: 0px 15px 15px;
+    font-family: Bree Serif;
+    color: #2fb0d0;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 35px auto auto auto auto auto auto auto 60px;
+    grid-template-areas: 'topbar' '.' '.' '.' '.' '.' '.' '.' '.';
+    overflow-x: hidden;
+}
+
+.vendacartinput {
+    border-radius: 5px;
+    height: 20px;
+    width: 100%;
+    margin-right: 10px;
+    grid-area: InputAR;
+}
+
+.buttonclear {
+    display: flex;
+    vertical-align: middle;
+    align-items: center;
+    justify-content: center;
+}
+
+.buttonclear>button {
+    border-radius: 5px;
+    font-family: Bree Serif;
+    width: 100px;
+    height: 30px;
+    background-color: coral;
+    border: none;
+    color: white;
+    text-align: center;
+    opacity: 0.8;
+    transition: 0.3s;
+    display: inline-block;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.buttonclear>button:hover {
+    opacity: 1;
+}
+
+.backspan {
+    color: #ffffff;
+    border: none;
+    font-size: 1.2em;
+    cursor: pointer;
+    background-color: #222222;
+    opacity: 0.7;
+    transition: 0.3s;
+}
+
+.backspan:hover {
+    opacity: 1;
+}
+
+.pickbutton {
+    border-radius: 5px;
+    width: 36px;
+    height: 30px;
+    background-image: url('hand_icon.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    color: white;
+    background-color: #222222;
+    cursor: pointer;
+    border-style: dashed;
+    opacity: 0.7;
+    transition: 0.3s;
+}
+
+.pickbutton:hover {
+    opacity: 1;
+}
+
+.plusbutton {
+    border-radius: 5px;
+    width: 50px;
+    height: 50px;
+    background-image: url('plus.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    border-style: dashed;
+    background-color: #222222;
+    opacity: 0.7;
+    transition: 0.3s;
+}
+
+.plusbutton:hover {
+    opacity: 1;
+    cursor: pointer;
+}
+
+.topbar {
+    grid-area: 1 / 1 / 2 / 2;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+    display: grid;
+    grid-template-columns: 0.2fr 1fr 0.4fr;
+    grid-template-rows: 35px 4px;
+    grid-template-areas: '. . .' 'HRLINE HRLINE HRLINE';
+}
+
+.headlineAR {
+    grid-area: HeadLinAR;
+    display: flex;
+    align-items: center;
+    justify-content: left;
+}
+
+.inputAR {
+    grid-area: InputAR;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.buttonAR {
+    display: flex;
+    vertical-align: middle;
+    align-items: center;
+    justify-content: center;
+    grid-area: ButtonAR;
+}
+
+.items {
+    display: grid;
+    grid-template-columns: 1fr 0.1fr;
+    grid-template-rows: 30px 40px;
+    grid-template-areas: 'HeadLinAR .' 'InputAR ButtonAR';
+}
+
+.itemimages {
+    display: grid;
+    grid-template-columns: 1fr 0.1fr;
+    grid-template-rows: 30px auto;
+    grid-template-areas: 'HeadLinAR .' 'InputAR ButtonAR';
+}
+
+.buttontrash {
+    position: relative;
+    opacity: 0.1;
+    background-color: #222222;
+    color: #f17070;
+    border: none;
+    transition: 0.3s;
+    border-radius: 5px;
+    padding: 6px;
+    top: -25px;
+    right: 26px;
+}
+
+.buttontrash:hover {
+    opacity: 1;
+    cursor: pointer;
+}
+
+.highlight {
+    background-color: #f17070;
+}
+
+.imagehighlight {
+    background-color: #f17070;
+    opacity: 0.6;
+}
+
+.imagepicker {
+    opacity: 0.7;
+    transition: 0.3s;
+}
+
+.imagepicker:hover {
+    opacity: 1;
+    cursor: pointer;
+}
+
+.upload {
+    border-radius: 5px;
+    font-family: Bree Serif;
+    width: 200px;
+    height: 30px;
+    background-color: coral;
+    border: none;
+    color: white;
+    text-align: center;
+    opacity: 0.8;
+    transition: 0.3s;
+    display: inline-block;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.upload:hover {
+    opacity: 1;
+}

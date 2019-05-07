@@ -1,0 +1,113 @@
+<!DOCTYPE html> 
+<html lang="en"> 
+    <head> 
+        <meta charset="utf-8"> 
+        <title>Clip</title>         
+        <link rel="stylesheet" href="custom.css"> 
+        <script src="jquery-3.4.1.min.js"></script>         
+        <script src="popup.js"></script>         
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Bree+Serif:400">
+    </head>     
+    <body class="vendacartbody"> 
+        <div class="topbar">
+            <button class="backspan">&#10142</button>
+            <h2>ADD PRODUCT</h2>
+            <div class="buttonclear" tyle="">
+                <button id="clear">Clear Form</button>
+            </div>
+            <div style="grid-area:HRLINE;">
+                <hr/>
+            </div>
+        </div>
+        <!-- product name  -->
+        <div class="items">
+            <div class="headlineAR">
+                <h4>Product Name</h4>
+            </div>
+            <div class="inputAR">
+                <input class="vendacartinput" id="productname" type="text" placeholder="Product Name Here" value="">
+            </div>
+            <div class="buttonAR">
+                <button class="pickbutton"></button>
+            </div>
+        </div>
+        <!-- SKU -->
+        <div class="items">
+            <div class="headlineAR">
+                <h4>SKU</h4>
+            </div>
+            <div class="inputAR">
+                <input class="vendacartinput" id="productsku" type="text" placeholder="Product SKU here" value="">
+            </div>
+            <div class="buttonAR">
+                <button class="pickbutton"></button>
+            </div>
+        </div>
+        <!-- Category -->
+        <div class="items">
+            <div class="headlineAR">
+                <h4>Category</h4>
+            </div>
+            <div class="inputAR">
+                <input class="vendacartinput" id="category" type="text" placeholder="Product Category" value="">
+            </div>
+            <div class="buttonAR">
+                <button class="pickbutton"></button>
+            </div>
+        </div>
+        <!-- Description -->
+        <div class="items">
+            <div class="headlineAR">
+                <h4>Product Description</h4>
+            </div>
+            <div class="inputAR">
+                <input class="vendacartinput" id="productdesc" type="text" placeholder="Product Description here" value="">
+            </div>
+            <div class="buttonAR">
+                <button class="pickbutton"></button>
+            </div>
+        </div>
+        <!-- Dimension -->
+        <div class="items">
+            <div class="headlineAR">
+                <h4>Dimension</h4>
+            </div>
+            <div class="inputAR">
+                <input class="vendacartinput" id="productdim" type="text" placeholder="Product Dimension here" value="">
+            </div>
+            <div class="buttonAR">
+                <button class="pickbutton"></button>
+            </div>
+        </div>
+        <!-- Price -->
+        <div class="items">
+            <div class="headlineAR">
+                <h4>Price</h4>
+            </div>
+            <div class="inputAR">
+                <input class="vendacartinput" id="productprice" type="text" placeholder="Product Price here" value="">
+            </div>
+            <div class="buttonAR">
+                <button class="pickbutton"></button>
+            </div>
+        </div>
+        <!-- Images -->
+        <div class="itemimages">
+            <div class="headlineAR">
+                <h4>Images</h4>
+            </div>
+            <div id="imageAR" style="grid-area: InputAR;  align-items: center; justify-content: center;display:grid;grid-template-columns:1fr 1fr 1fr;grid-template-rows:auto;grid-gap:4px;">
+                <div style="display: flex; align-items: center; width: 80px;">
+                    <img src="img_pick.png" width="80" height="80" class="imagepicker"/>
+                    <button class="buttontrash">&#10008;</button>
+                </div>
+            </div>
+            <div class="buttonAR">
+                <button id="addimage" class="plusbutton"></button>
+            </div>
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr; grid-template-rows: 30px; display: flex; justify-content: center; align-items: center;">
+            <button class="upload" style="font-size: 1.2em;">Upload</button>
+        </div>         
+    </body>     
+</html>
